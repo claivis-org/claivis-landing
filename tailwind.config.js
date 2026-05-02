@@ -12,6 +12,12 @@ module.exports = {
         body: ['var(--font-body)'],
       },
       colors: {
+        base: '#F8FAFC',
+        surface: '#FFFFFF',
+        'surface-alt': '#F1F5F9',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        border: '#E2E8F0',
         navy: '#0A1628',
         'navy-mid': '#0F2040',
         'navy-light': '#162B52',
@@ -21,7 +27,6 @@ module.exports = {
         'accent-dim': '#00A8CC',
         'accent-glow': 'rgba(0,212,255,0.15)',
         gold: '#F5A623',
-        chalk: '#F8F5EE',
       },
       animation: {
         'fade-up': 'fadeUp 0.7s ease forwards',
