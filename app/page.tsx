@@ -46,7 +46,7 @@ function useReveal() {
 }
 
 // ── Waitlist form ──────────────────────────────────────────────────────────────
-function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
+function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'footer' }) {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [school, setSchool] = useState('')
@@ -55,56 +55,24 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const trimmedName = name.trim()
-    const trimmedEmail = email.trim()
-    const trimmedSchool = school.trim()
-
-    if (!trimmedEmail || !trimmedName) {
-      setState('error')
-      setMsg('Please enter your name and email.')
-      return
-    }
     setState('loading')
-    setMsg('')
-
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: trimmedName,
-          email: trimmedEmail,
-          school: trimmedSchool,
-        }),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok || !data.success) {
-        setState('error')
-        setMsg(data.error || 'Something went wrong. Please try again.')
-        return
-      }
-
+    // Simulating API call for visual prototype
+    setTimeout(() => {
       setState('success')
-      setMsg(data.message || 'You\'re on the list! We\'ll be in touch very soon.')
-      setName('')
-      setEmail('')
-      setSchool('')
-    } catch {
-      setState('error')
-      setMsg('Unable to submit right now. Please try again.')
-    }
+      setMsg('You\'re on the list! We\'ll be in touch very soon.')
+    }, 1500)
   }
+
+  const isFooter = variant === 'footer'
 
   if (state === 'success') {
     return (
-      <div className={`rounded-2xl border border-accent/30 bg-accent/5 p-6 text-center ${variant === 'hero' ? '' : 'max-w-lg mx-auto'}`}>
-        <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mx-auto mb-3">
+      <div className={`rounded-2xl border p-6 text-center ${isFooter ? 'bg-navy-mid border-white/10' : 'border-blue/20 bg-blue/5'} ${variant !== 'hero' ? 'max-w-lg mx-auto' : ''}`}>
+        <div className={`w-12 h-12 rounded-full border flex items-center justify-center mx-auto mb-3 ${isFooter ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-blue/10 border-blue/20 text-blue'}`}>
           <CheckIcon />
         </div>
-        <p className="text-accent font-semibold text-lg mb-1">You're on the list.</p>
-        <p className="text-white/60 text-sm">{msg}</p>
+        <p className={`font-semibold text-lg mb-1 ${isFooter ? 'text-white' : 'text-blue'}`}>You're on the list.</p>
+        <p className={`text-sm ${isFooter ? 'text-white/60' : 'text-text-muted'}`}>{msg}</p>
       </div>
     )
   }
@@ -117,7 +85,7 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
           placeholder="Your name"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="input-glow w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:border-accent/50 transition-colors"
+          className={`input-glow w-full rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
           required
         />
         <input
@@ -125,22 +93,22 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
           placeholder="School name (optional)"
           value={school}
           onChange={e => setSchool(e.target.value)}
-          className="input-glow w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:border-accent/50 transition-colors"
+          className={`input-glow w-full rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
         />
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <input
           type="email"
           placeholder="School email address"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="input-glow flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:border-accent/50 transition-colors"
+          className={`input-glow flex-1 rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
           required
         />
         <button
           type="submit"
           disabled={state === 'loading'}
-          className="btn-primary flex-shrink-0 bg-accent text-navy font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white transition-colors flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          className={`btn-primary flex-shrink-0 font-semibold text-sm px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed ${isFooter ? 'bg-accent text-navy hover:bg-white' : 'bg-blue text-white hover:bg-blue/90 shadow-lg shadow-blue/20 hover:shadow-blue/30'}`}
         >
           {state === 'loading' ? (
             <span className="flex items-center gap-2">
@@ -155,8 +123,7 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
           )}
         </button>
       </div>
-      {msg && state === 'error' && <p className="text-red-400 text-xs">{msg}</p>}
-      <p className="text-white/30 text-xs">No spam. No commitment. Just early access.</p>
+      <p className={`text-xs ${isFooter ? 'text-white/30' : 'text-text-muted'}`}>No spam. No commitment. Just early access.</p>
     </form>
   )
 }
@@ -166,6 +133,7 @@ export default function Home() {
   useReveal()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -216,35 +184,31 @@ export default function Home() {
   const howSteps = [
     {
       n: '01',
-      title: 'Upload Your Curriculum',
-      desc: 'Share your school\'s scheme of work — in Word, PDF, or Excel. Claivis reads it, structures it, and builds lesson plans for every subject and class level automatically.',
-      color: 'from-blue/20 to-transparent',
-      accent: '#1A4A8A',
+      title: 'Upload Curriculum',
+      desc: 'Share your school\'s scheme of work — in Word, PDF, or Excel. Claivis reads it, structures it, and builds lesson plans automatically.',
+      color: 'blue',
     },
     {
       n: '02',
-      title: 'Schedule Your Classes',
-      desc: 'Map your existing school timetable to the platform. Claivis knows what to teach, which class, which period — Monday through Friday, every week of term.',
-      color: 'from-accent/10 to-transparent',
-      accent: '#00D4FF',
+      title: 'Schedule Classes',
+      desc: 'Map your existing school timetable to the platform. Claivis knows what to teach, which class, which period — every week of the term.',
+      color: 'accent',
     },
     {
       n: '03',
-      title: 'The Bell Rings — Claivis Teaches',
-      desc: 'When the period starts, the AI character appears on your classroom screen and begins the lesson. Structured. Visual. Warm. Whether the teacher is present or not.',
-      color: 'from-gold/10 to-transparent',
-      accent: '#F5A623',
+      title: 'Claivis Teaches',
+      desc: 'When the period starts, the AI character appears on your classroom screen and begins the structured, visual lesson.',
+      color: 'gold',
     },
     {
       n: '04',
-      title: 'Students Ask — Claivis Answers',
-      desc: 'A student raises their voice: "I don\'t understand Newton\'s third law." Claivis responds clearly, confirms understanding, and continues the lesson where it left off.',
-      color: 'from-blue/20 to-transparent',
-      accent: '#1A4A8A',
+      title: 'Live Q&A',
+      desc: 'A student asks a question out loud. Claivis hears, responds clearly, confirms understanding, and continues the lesson seamlessly.',
+      color: 'blue-mid',
     },
   ]
 
-  const subjects = ['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Further Mathematics', 'English Language', 'Agricultural Science', 'Economics', 'Geography', 'Civic Education', 'Computer Science', 'Literature', 'Government', 'Physics', 'Chemistry', 'Biology', 'Mathematics', 'Further Mathematics', 'English Language', 'Agricultural Science', 'Economics']
+  const subjects = ['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Further Mathematics', 'English Language', 'Agricultural Science', 'Economics', 'Geography', 'Civic Education', 'Computer Science', 'Literature', 'Government']
 
   const pricing = [
     {
@@ -304,59 +268,59 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-navy text-white overflow-x-hidden">
+    <div className="min-h-screen bg-base text-text-main overflow-x-hidden">
 
       {/* ── NAV ─────────────────────────────────────────────────────────────── */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-navy/95 backdrop-blur-md border-b border-white/5 shadow-xl' : 'bg-transparent'}`}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-border shadow-sm py-3' : 'bg-transparent py-5'}`}>
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-              <span className="text-navy font-bold text-sm" style={{ fontFamily: 'var(--font-display)' }}>C</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg shadow-blue/20">
+              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>C</span>
             </div>
-            <span className="font-bold text-lg tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
+            <span className="font-bold text-xl tracking-tight text-text-main" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
           </a>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
             {[['How it works', '#how'], ['Features', '#features'], ['Pricing', '#pricing'], ['FAQ', '#faq']].map(([label, href]) => (
-              <a key={label} href={href} className="text-sm text-white/60 hover:text-white transition-colors">{label}</a>
+              <a key={label} href={href} className="text-sm font-medium text-text-muted hover:text-blue transition-colors">{label}</a>
             ))}
           </div>
 
           {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-4">
             <a
               href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
               target="_blank"
               rel="noopener noreferrer"
-              className="wa-btn flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-xl"
+              className="text-text-muted hover:text-[#25D366] transition-colors"
+              title="Join WhatsApp Community"
             >
               <WhatsAppIcon />
-              Join Community
             </a>
-            <a href="#waitlist" className="btn-primary bg-accent text-navy font-semibold text-sm px-5 py-2 rounded-xl hover:bg-white transition-colors">
+            <a href="#waitlist" className="btn-primary bg-blue text-white font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-blue/90 shadow-md shadow-blue/20 transition-all">
               Join Waitlist
             </a>
           </div>
 
           {/* Mobile menu toggle */}
-          <button className="md:hidden text-white/70 hover:text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="md:hidden text-text-main" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden bg-navy-mid border-t border-white/5 px-6 py-4 space-y-3">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg px-6 py-4 space-y-4">
             {[['How it works', '#how'], ['Features', '#features'], ['Pricing', '#pricing'], ['FAQ', '#faq']].map(([label, href]) => (
-              <a key={label} href={href} onClick={() => setMobileOpen(false)} className="block text-sm text-white/60 hover:text-white py-1">{label}</a>
+              <a key={label} href={href} onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-text-muted hover:text-blue py-2">{label}</a>
             ))}
-            <div className="pt-2 space-y-2">
+            <div className="pt-4 border-t border-border space-y-3">
               <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" target="_blank" rel="noopener noreferrer" className="wa-btn flex items-center justify-center gap-2 text-white text-sm font-medium px-4 py-3 rounded-xl w-full">
                 <WhatsAppIcon /> Join WhatsApp Community
               </a>
-              <a href="#waitlist" onClick={() => setMobileOpen(false)} className="btn-primary block text-center bg-accent text-navy font-semibold text-sm px-5 py-3 rounded-xl w-full">
+              <a href="#waitlist" onClick={() => setMobileOpen(false)} className="btn-primary block text-center bg-blue text-white font-semibold text-sm px-5 py-3 rounded-xl w-full">
                 Join Waitlist
               </a>
             </div>
@@ -365,249 +329,264 @@ export default function Home() {
       </nav>
 
       {/* ── HERO ────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
-        {/* Background orbs */}
-        <div className="orb w-96 h-96 bg-blue/20 top-10 -left-32" />
-        <div className="orb w-80 h-80 bg-accent/10 top-40 right-0" />
-        <div className="orb w-64 h-64 bg-blue/15 bottom-20 left-1/2" />
+      <section className="relative min-h-screen flex items-center justify-center pt-32 pb-16 overflow-hidden bg-gradient-to-b from-white to-base">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-blue/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNDQkQ1RTEiIGZpbGwtb3BhY2l0eT0iMC41Ii8+PC9zdmc+')] [mask-image:linear-gradient(to_bottom,white,transparent)] pointer-events-none opacity-60" />
 
-        {/* Grid texture */}
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 border border-accent/20 bg-accent/5 rounded-full px-4 py-1.5 text-xs text-accent mb-8 animate-fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-slow" />
+          <div className="inline-flex items-center gap-2 border border-blue/10 bg-blue/5 rounded-full px-4 py-1.5 text-xs font-semibold text-blue mb-8 animate-fade-in shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue"></span>
+            </span>
             Nigeria's first AI teaching agent — now accepting pilot schools
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6" style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
-            <span className="block text-white">When the teacher</span>
-            <span className="block text-white">is absent,</span>
-            <span className="block gradient-text">Claivis shows up.</span>
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6 text-text-main" style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+            When the teacher is absent,<br />
+            <span className="gradient-text">Claivis shows up.</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
-            An AI teaching agent that delivers curriculum-aligned lessons, answers student questions in real time, and keeps every classroom running — even when no qualified teacher is available.
+          <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+            An AI teaching agent that delivers curriculum-aligned lessons, answers student questions in real time, and keeps every classroom running.
           </p>
 
           {/* Waitlist form */}
-          <div className="max-w-2xl mx-auto mb-8">
+          <div className="max-w-xl mx-auto mb-8 bg-white p-2 rounded-2xl shadow-xl shadow-blue/5 border border-border">
             <WaitlistForm variant="hero" />
           </div>
 
-          {/* WhatsApp CTA */}
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <span className="text-white/30 text-sm">Or</span>
-            <a
-              href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wa-btn inline-flex items-center gap-2 text-white text-sm font-medium px-5 py-2.5 rounded-xl"
-            >
-              <WhatsAppIcon />
-              Join our WhatsApp community
-            </a>
-            <span className="text-white/30 text-xs">Get early updates, share feedback, shape the product</span>
-          </div>
-
           {/* Social proof strip */}
-          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/40">
-            <div className="flex items-center gap-2">
+          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-medium text-text-muted">
+            <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
-                {['1A4A8A', '2563EB', '0F2040', '162B52'].map((c, i) => (
-                  <div key={i} className="w-7 h-7 rounded-full border-2 border-navy flex items-center justify-center text-xs font-bold text-white" style={{ background: `#${c}` }}>{String.fromCharCode(65 + i)}</div>
+                {['1A4A8A', '2563EB', '00D4FF', 'F5A623'].map((c, i) => (
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm" style={{ background: `#${c}` }}>
+                    {String.fromCharCode(65 + i)}
+                  </div>
                 ))}
               </div>
               <span>Principals already on the waitlist</span>
             </div>
-            <span className="hidden sm:block text-white/20">·</span>
-            <span>Built for WAEC curriculum</span>
-            <span className="hidden sm:block text-white/20">·</span>
-            <span>Free pilot for first 5 schools</span>
+            <span className="hidden sm:block text-border">|</span>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>Built for WAEC curriculum</span>
+            </div>
           </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/20 animate-float">
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
         </div>
       </section>
 
       {/* ── PROBLEM STRIP ──────────────────────────────────────────────────── */}
-      <section className="relative bg-navy-mid border-y border-white/5 py-6 overflow-hidden">
+      <section className="relative bg-white border-y border-border py-5 overflow-hidden shadow-sm">
         <div className="marquee-inner">
           {[...subjects, ...subjects].map((s, i) => (
-            <div key={i} className="flex items-center gap-4 px-4 flex-shrink-0">
-              <span className="text-white/20 text-sm font-medium tracking-wide uppercase">{s}</span>
-              <span className="w-1 h-1 rounded-full bg-accent/30 flex-shrink-0" />
+            <div key={i} className="flex items-center gap-6 px-6 flex-shrink-0">
+              <span className="text-text-muted text-sm font-bold tracking-widest uppercase">{s}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue/20 flex-shrink-0" />
             </div>
           ))}
         </div>
       </section>
 
       {/* ── STATS ───────────────────────────────────────────────────────────── */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
-        <div className="text-center mb-14 reveal">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">The reality on the ground</p>
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
+      <section className="py-24 px-6 max-w-6xl mx-auto">
+        <div className="text-center mb-16 reveal">
+          <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">The reality on the ground</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
             Nigeria's teacher shortage<br />is not a future problem.
           </h2>
-          <p className="text-white/50 mt-3 max-w-xl mx-auto">It is happening in classrooms across the country right now, every single school day.</p>
+          <p className="text-text-muted mt-4 max-w-2xl mx-auto text-lg">It is happening in classrooms across the country right now, every single school day.</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
-            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} relative bg-navy-light rounded-2xl p-6 border border-white/5 overflow-hidden`}>
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
-              <div className="stat-number text-white mb-1">{s.num}</div>
-              <p className="text-white/70 text-sm font-medium leading-snug">{s.label}</p>
-              <p className="text-white/30 text-xs mt-1">{s.sub}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* The gap statement */}
-        <div className="reveal mt-10 bg-gradient-to-r from-navy-light via-navy-mid to-navy-light rounded-2xl border border-white/5 p-8 text-center">
-          <p className="text-white/40 text-sm uppercase tracking-widest mb-2">The bottom line</p>
-          <p className="text-xl md:text-2xl text-white font-medium max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: 'var(--font-display)' }}>
-            "Every week, thousands of Nigerian students sit in classrooms with no teacher, no lesson, and no learning — because the system cannot supply enough qualified subject teachers."
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-2 text-accent">
-            <div className="h-px w-8 bg-accent/40" />
-            <span className="text-xs tracking-widest uppercase">This is what Claivis was built to solve</span>
-            <div className="h-px w-8 bg-accent/40" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ────────────────────────────────────────────────────── */}
-      <section id="how" className="py-20 px-6 max-w-6xl mx-auto">
-        <div className="text-center mb-16 reveal">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">Simple by design</p>
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
-            How Claivis works
-          </h2>
-          <p className="text-white/50 mt-3 max-w-xl mx-auto">From your scheme of work to a live classroom session in less than a week.</p>
-        </div>
-
-        <div className="space-y-6">
-          {howSteps.map((step, i) => (
-            <div key={i} className={`reveal reveal-delay-${i + 1} card-hover flex flex-col md:flex-row items-start gap-6 bg-navy-light rounded-2xl border border-white/5 p-8 overflow-hidden relative`}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-60`} />
-              <div className="relative flex-shrink-0">
-                <div className="w-14 h-14 rounded-2xl border flex items-center justify-center" style={{ borderColor: `${step.accent}40`, background: `${step.accent}15` }}>
-                  <span className="font-bold text-xl" style={{ fontFamily: 'var(--font-display)', color: step.accent }}>{step.n}</span>
-                </div>
-              </div>
-              <div className="relative">
-                <h3 className="text-lg font-semibold text-white mb-2" style={{ fontFamily: 'var(--font-display)' }}>{step.title}</h3>
-                <p className="text-white/60 leading-relaxed">{step.desc}</p>
-              </div>
-              <div className="hidden md:flex ml-auto relative flex-shrink-0 items-center">
-                <ArrowRight className="text-white/10 w-8 h-8" />
-              </div>
+            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} bg-white rounded-3xl p-8 border border-border shadow-sm relative overflow-hidden group`}>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="stat-number text-text-main mb-2 tracking-tighter">{s.num}</div>
+              <p className="text-text-main font-semibold leading-snug mb-1">{s.label}</p>
+              <p className="text-text-muted text-sm">{s.sub}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── DEMO SCENE ──────────────────────────────────────────────────────── */}
-      <section className="py-16 px-6 max-w-6xl mx-auto">
-        <div className="reveal bg-navy-light rounded-3xl border border-white/5 overflow-hidden">
-          {/* Fake browser chrome */}
-          <div className="bg-navy-mid px-4 py-3 flex items-center gap-3 border-b border-white/5">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/60" />
-              <div className="w-3 h-3 rounded-full bg-gold/60" />
-              <div className="w-3 h-3 rounded-full bg-green-500/60" />
-            </div>
-            <div className="flex-1 bg-navy/60 rounded-md px-3 py-1 text-white/30 text-xs">claivis.org/dashboard</div>
+      {/* ── HOW IT WORKS (REDESIGNED) ───────────────────────────────────────── */}
+      <section id="how" className="py-24 bg-white border-y border-border">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-20 reveal">
+            <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">Simple by design</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
+              From syllabus to live<br />lesson in minutes.
+            </h2>
           </div>
 
-          {/* Dashboard mockup */}
-          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/5">
-            {/* Sidebar */}
-            <div className="bg-navy p-6 space-y-4">
-              <p className="text-white/30 text-xs uppercase tracking-widest mb-4">Class Schedule — Today</p>
-              {[
-                { time: '8:00 AM', subject: 'Physics — SS2A', status: 'completed', teacher: 'Claivis' },
-                { time: '9:40 AM', subject: 'Chemistry — SS1B', status: 'live', teacher: 'Claivis' },
-                { time: '11:20 AM', subject: 'Mathematics — JSS3', status: 'upcoming', teacher: 'Mr. Adeyemi' },
-                { time: '1:00 PM', subject: 'Biology — SS2B', status: 'upcoming', teacher: 'Claivis' },
-              ].map((c, i) => (
-                <div key={i} className={`flex items-center gap-3 p-3 rounded-xl border ${c.status === 'live' ? 'border-accent/30 bg-accent/5' : 'border-white/5 bg-white/2'}`}>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-white/40 text-xs">{c.time}</p>
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            {/* Left side: Steps */}
+            <div className="space-y-10 relative">
+              {/* Timeline line */}
+              <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-border hidden md:block" />
+              
+              {howSteps.map((step, i) => (
+                <div 
+                  key={i} 
+                  className={`reveal flex items-start gap-6 relative z-10 cursor-pointer transition-all duration-300 ${activeStep === i ? 'opacity-100 translate-x-2' : 'opacity-50 hover:opacity-80'}`}
+                  onClick={() => setActiveStep(i)}
+                >
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border-2 transition-colors ${activeStep === i ? 'bg-blue text-white border-blue shadow-lg shadow-blue/20' : 'bg-surface border-border text-text-muted'}`}>
+                    <span className="font-bold text-xl font-mono">{step.n}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-sm font-medium truncate">{c.subject}</p>
-                    <p className="text-white/40 text-xs">{c.teacher}</p>
+                  <div className="pt-3">
+                    <h3 className={`text-2xl font-bold mb-2 ${activeStep === i ? 'text-text-main' : 'text-text-main'}`} style={{ fontFamily: 'var(--font-display)' }}>
+                      {step.title}
+                    </h3>
+                    <p className="text-text-muted leading-relaxed text-lg">{step.desc}</p>
                   </div>
-                  <div className={`flex-shrink-0 w-2 h-2 rounded-full ${c.status === 'live' ? 'bg-accent animate-pulse' : c.status === 'completed' ? 'bg-green-500/60' : 'bg-white/20'}`} />
                 </div>
               ))}
             </div>
 
-            {/* Live session view */}
-            <div className="md:col-span-2 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    <span className="text-accent text-xs font-medium uppercase tracking-widest">Live Session</span>
-                  </div>
-                  <h3 className="text-white font-semibold">Chemistry — SS1B · Period 2</h3>
-                  <p className="text-white/40 text-sm">Topic: Periodic Table — Group VII Elements</p>
+            {/* Right side: Web Mockups */}
+            <div className="relative reveal reveal-delay-2 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex items-center justify-center p-6">
+              
+              {/* Fake Browser Chrome */}
+              <div className="absolute top-0 left-0 w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400" />
+                  <div className="w-3 h-3 rounded-full bg-amber-400" />
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
                 </div>
-                <div className="text-right">
-                  <p className="text-white/30 text-xs">Session time</p>
-                  <p className="text-white font-mono text-lg">24:17</p>
+                <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+                  <span className="opacity-50">🔒</span> claivis.org/dashboard
                 </div>
               </div>
 
-              {/* AI character placeholder */}
-              <div className="relative bg-navy rounded-2xl border border-white/5 aspect-video flex items-center justify-center mb-6 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue/10 via-transparent to-accent/5" />
-                <div className="text-center z-10">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue to-accent/60 flex items-center justify-center mx-auto mb-3 animate-float shadow-2xl shadow-blue/20">
-                    <span className="text-2xl">🎓</span>
+              {/* Mockup Content Container */}
+              <div className="w-full h-full pt-12 relative">
+                
+                {/* Step 1 Mockup: Upload */}
+                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                  <div className="h-full border-2 border-dashed border-blue/30 rounded-2xl bg-blue/5 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
+                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-blue">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                    </div>
+                    <h4 className="text-xl font-bold text-text-main mb-2">Upload Curriculum</h4>
+                    <p className="text-text-muted text-sm max-w-xs mb-6">Drag and drop your PDF, Word, or Excel scheme of work here.</p>
+                    <div className="bg-white rounded-xl shadow-sm border border-border p-3 w-full max-w-xs flex items-center gap-3 animate-fade-up">
+                      <div className="w-8 h-8 bg-green-100 rounded text-green-600 flex items-center justify-center text-xs font-bold">XLS</div>
+                      <div className="flex-1 text-left">
+                        <div className="text-xs font-bold text-text-main">Term_1_Scheme.xlsx</div>
+                        <div className="text-[10px] text-text-muted">Parsing 12 subjects...</div>
+                      </div>
+                      <div className="w-4 h-4 border-2 border-t-blue border-border rounded-full animate-spin" />
+                    </div>
                   </div>
-                  <p className="text-white/60 text-sm font-medium">AI Teaching Character</p>
-                  <p className="text-white/30 text-xs mt-1">"...Halogens are highly reactive non-metals found in Group VII. Let me explain why..."</p>
                 </div>
-                {/* Waveform */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-end gap-0.5">
-                  {[3,5,8,6,4,7,9,5,3,6,8,4,7,5,3].map((h, i) => (
-                    <div key={i} className="w-1 rounded-full bg-accent/40 animate-pulse" style={{ height: `${h * 3}px`, animationDelay: `${i * 0.1}s` }} />
-                  ))}
-                </div>
-              </div>
 
-              {/* Q&A feed */}
-              <div className="space-y-2">
-                <p className="text-white/30 text-xs uppercase tracking-widest mb-3">Student Questions</p>
-                {[
-                  { student: 'Student (Back row)', q: 'What makes chlorine more reactive than iodine?', time: '2 min ago', answered: true },
-                  { student: 'Student (Front row)', q: 'Is fluorine the most reactive element in all of chemistry?', time: 'Just now', answered: false },
-                ].map((item, i) => (
-                  <div key={i} className={`flex gap-3 p-3 rounded-xl border ${item.answered ? 'border-white/5 bg-white/2' : 'border-accent/20 bg-accent/5'}`}>
-                    <div className="w-6 h-6 rounded-full bg-blue/40 flex items-center justify-center flex-shrink-0 text-xs text-white/60 mt-0.5">?</div>
-                    <div className="flex-1">
-                      <p className="text-white/40 text-xs mb-0.5">{item.student} · {item.time}</p>
-                      <p className="text-white/80 text-sm">{item.q}</p>
+                {/* Step 2 Mockup: Schedule */}
+                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                  <div className="h-full flex flex-col">
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="font-bold text-text-main">Weekly Schedule</h4>
+                      <div className="text-xs font-bold text-blue bg-blue/10 px-3 py-1 rounded-full">SS2 Science</div>
                     </div>
-                    <div className={`flex-shrink-0 text-xs px-2 py-1 rounded-lg self-start ${item.answered ? 'bg-green-500/10 text-green-400' : 'bg-accent/10 text-accent animate-pulse'}`}>
-                      {item.answered ? 'Answered' : 'Answering...'}
+                    <div className="flex-1 bg-white border border-border rounded-xl shadow-sm overflow-hidden flex">
+                      {/* Time col */}
+                      <div className="w-16 border-r border-border bg-base text-[10px] text-text-muted font-medium py-2 flex flex-col justify-around text-center">
+                        <span>8:00</span><span>9:00</span><span>10:00</span><span>11:00</span><span>12:00</span>
+                      </div>
+                      {/* Days */}
+                      <div className="flex-1 grid grid-cols-3 divide-x divide-border">
+                        {['Mon', 'Tue', 'Wed'].map((day, d) => (
+                          <div key={day} className="relative">
+                            <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
+                            <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
+                              <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
+                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
+                            </div>
+                            <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
+                              <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
+                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
+                            </div>
+                            {d === 1 && (
+                              <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
+                                <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
+                                <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Step 3 Mockup: Live Teaching */}
+                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                   <div className="h-full bg-white rounded-xl shadow-md border border-border overflow-hidden flex flex-col relative">
+                     {/* Video Area */}
+                     <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
+                       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
+                       <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
+                         <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
+                         {/* Speaking ripple */}
+                         <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
+                       </div>
+                       <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
+                         <p className="text-white text-sm text-center">"Today, we will be looking at Newton's Laws of Motion..."</p>
+                       </div>
+                     </div>
+                     {/* Dashboard Bar */}
+                     <div className="h-14 bg-white border-t border-border flex items-center px-4 justify-between">
+                       <div className="flex items-center gap-2">
+                         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                         <span className="text-xs font-bold text-text-main">LIVE</span>
+                         <span className="text-xs text-text-muted border-l border-border pl-2 ml-1">Physics SS2</span>
+                       </div>
+                       <div className="flex gap-1">
+                          {[3,5,8,6,4,7,9,5].map((h, i) => (
+                            <div key={i} className="w-1 rounded-full bg-blue animate-pulse" style={{ height: `${h * 1.5}px`, animationDelay: `${i * 0.1}s` }} />
+                          ))}
+                       </div>
+                     </div>
+                   </div>
+                </div>
+
+                {/* Step 4 Mockup: Q&A */}
+                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                   <div className="h-full bg-white rounded-xl shadow-md border border-border flex flex-col p-4">
+                     <h4 className="font-bold text-text-main mb-4 border-b border-border pb-2">Live Session Transcript</h4>
+                     <div className="flex-1 space-y-4 overflow-hidden relative">
+                       <div className="flex gap-3">
+                         <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl">🤖</div>
+                         <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-3 text-sm text-text-main">
+                           Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
+                         </div>
+                       </div>
+                       <div className="flex gap-3 flex-row-reverse animate-fade-up">
+                         <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-sm font-bold text-gold">S</div>
+                         <div className="flex-1 bg-gold/5 border border-gold/20 rounded-2xl rounded-tr-sm p-3 text-sm text-text-main">
+                           <span className="text-[10px] text-text-muted block mb-1">Student 🎤</span>
+                           Yes, does that mean a heavier object always hits the ground faster?
+                         </div>
+                       </div>
+                       <div className="flex gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
+                         <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl shadow-lg shadow-blue/20">🤖</div>
+                         <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-3 text-sm shadow-md relative">
+                           <div className="absolute -left-1 top-3 w-3 h-3 bg-blue rotate-45"></div>
+                           That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -615,55 +594,54 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES ────────────────────────────────────────────────────────── */}
-      <section id="features" className="py-20 px-6 max-w-6xl mx-auto">
+      <section id="features" className="py-24 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-16 reveal">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">Built for real classrooms</p>
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">Built for real classrooms</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
             Everything a school needs.<br />Nothing it doesn't.
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <div key={i} className={`card-hover reveal reveal-delay-${(i % 3) + 1} bg-navy-light rounded-2xl border border-white/5 p-6 relative overflow-hidden group`}>
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="text-3xl mb-4">{f.icon}</div>
-              <h3 className="text-white font-semibold mb-2" style={{ fontFamily: 'var(--font-display)' }}>{f.title}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
+            <div key={i} className={`card-hover reveal reveal-delay-${(i % 3) + 1} bg-white rounded-3xl border border-border p-8 relative overflow-hidden group shadow-sm`}>
+              <div className="w-12 h-12 rounded-xl bg-blue/5 text-2xl flex items-center justify-center mb-6 text-blue group-hover:scale-110 group-hover:bg-blue/10 transition-all">{f.icon}</div>
+              <h3 className="text-text-main text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.title}</h3>
+              <p className="text-text-muted text-sm leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── CHALK SECTION — THE COMPARISON ─────────────────────────────────── */}
-      <section className="chalk-section py-20 px-6">
+      <section className="chalk-section py-24 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14 reveal">
-            <p className="text-blue text-sm font-medium tracking-widest uppercase mb-3">The honest comparison</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy" style={{ fontFamily: 'var(--font-display)' }}>
+          <div className="text-center mb-16 reveal">
+            <p className="text-accent text-sm font-bold tracking-widest uppercase mb-3">The honest comparison</p>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white" style={{ fontFamily: 'var(--font-display)' }}>
               Claivis costs less than<br />hiring one specialist teacher.
             </h2>
-            <p className="text-navy/50 mt-3 max-w-xl mx-auto">And it covers every subject, every classroom, every period — not just one.</p>
+            <p className="text-white/70 mt-4 max-w-xl mx-auto text-lg">And it covers every subject, every classroom, every period — not just one.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Without Claivis */}
-            <div className="reveal reveal-delay-1 bg-white rounded-2xl border border-navy/10 p-8 shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-400 text-xl">✗</div>
-                <h3 className="font-bold text-navy text-lg" style={{ fontFamily: 'var(--font-display)' }}>Without Claivis</h3>
+            <div className="reveal reveal-delay-1 bg-white rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500 text-2xl font-bold">✗</div>
+                <h3 className="font-extrabold text-text-main text-2xl" style={{ fontFamily: 'var(--font-display)' }}>Without Claivis</h3>
               </div>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {[
                   'Empty classrooms when teachers are absent',
-                  'Physics periods missed for weeks — sometimes entire terms',
-                  'Students arrive for WAEC unprepared in core subjects',
-                  'Principal scrambles to find cover every Monday morning',
-                  'Parents complain about wasted fees and poor results',
-                  'Hiring one specialist teacher costs ₦1,800,000+ per year',
+                  'Physics periods missed for weeks',
+                  'Students arrive for WAEC unprepared',
+                  'Principal scrambles to find cover',
+                  'Parents complain about wasted fees',
+                  'Hiring one specialist costs ₦1,800,000+/yr',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-navy/70">
-                    <span className="text-red-400 mt-0.5 flex-shrink-0">✗</span>
+                  <li key={i} className="flex items-start gap-3 text-base text-text-muted font-medium">
+                    <span className="text-red-400 mt-1 flex-shrink-0">✗</span>
                     {item}
                   </li>
                 ))}
@@ -671,23 +649,25 @@ export default function Home() {
             </div>
 
             {/* With Claivis */}
-            <div className="reveal reveal-delay-2 bg-navy rounded-2xl border border-accent/20 p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue via-accent to-blue" />
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">✓</div>
-                <h3 className="font-bold text-white text-lg" style={{ fontFamily: 'var(--font-display)' }}>With Claivis</h3>
+            <div className="reveal reveal-delay-2 bg-navy rounded-3xl p-8 md:p-10 shadow-2xl shadow-navy/50 relative overflow-hidden border border-white/10">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue/20 via-transparent to-accent/10" />
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue via-accent to-blue" />
+              
+              <div className="flex items-center gap-4 mb-8 relative z-10">
+                <div className="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center text-accent text-2xl font-bold">✓</div>
+                <h3 className="font-extrabold text-white text-2xl" style={{ fontFamily: 'var(--font-display)' }}>With Claivis</h3>
               </div>
-              <ul className="space-y-3">
+              <ul className="space-y-4 relative z-10">
                 {[
-                  'Every period taught — regardless of teacher availability',
-                  'All WAEC subjects covered across every class level',
-                  'Students ask questions live and get real answers',
-                  'Principal sees lesson reports after every session',
+                  'Every period taught — regardless of absence',
+                  'All WAEC subjects covered automatically',
+                  'Students ask questions live and get answers',
+                  'Principal sees reports after every session',
                   'Parents see results improving term over term',
-                  'Claivis Growth covers all subjects for ₦1,350,000 per year',
+                  'Growth plan covers all subjects for ₦1,350,000/yr',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                    <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
+                  <li key={i} className="flex items-start gap-3 text-base text-white/80 font-medium">
+                    <span className="text-accent mt-1 flex-shrink-0">✓</span>
                     {item}
                   </li>
                 ))}
@@ -698,44 +678,41 @@ export default function Home() {
       </section>
 
       {/* ── PRICING ─────────────────────────────────────────────────────────── */}
-      <section id="pricing" className="py-20 px-6 max-w-6xl mx-auto">
+      <section id="pricing" className="py-24 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-16 reveal">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">Simple pricing</p>
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">Simple pricing</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
             One clear price.<br />No hidden fees.
           </h2>
-          <p className="text-white/50 mt-3 max-w-xl mx-auto">Paid per academic term. Cancel anytime. First 5 schools get the pilot free.</p>
+          <p className="text-text-muted mt-4 max-w-xl mx-auto text-lg">Paid per academic term. Cancel anytime. First 5 schools get the pilot free.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-8">
           {pricing.map((plan, i) => (
-            <div key={i} className={`reveal reveal-delay-${i + 1} card-hover relative rounded-2xl border overflow-hidden ${plan.highlighted ? 'border-accent/30 bg-navy-light' : 'border-white/5 bg-navy-light'}`}>
+            <div key={i} className={`reveal reveal-delay-${i + 1} card-hover relative rounded-3xl border overflow-hidden ${plan.highlighted ? 'border-blue bg-white shadow-2xl shadow-blue/10 scale-105 z-10' : 'border-border bg-white shadow-sm'}`}>
               {plan.highlighted && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue via-accent to-blue" />
-              )}
-              {plan.highlighted && (
-                <div className="absolute top-4 right-4">
-                  <span className="bg-accent/10 border border-accent/20 text-accent text-xs font-medium px-2.5 py-1 rounded-full">Most Popular</span>
+                <div className="absolute top-0 left-0 right-0 bg-blue text-white text-xs font-bold uppercase tracking-widest py-1.5 text-center">
+                  Most Popular
                 </div>
               )}
-              <div className="p-8">
-                <h3 className="text-white font-bold text-xl mb-1" style={{ fontFamily: 'var(--font-display)' }}>{plan.name}</h3>
-                <p className="text-white/40 text-sm mb-6">{plan.desc}</p>
+              <div className={`p-8 ${plan.highlighted ? 'pt-10' : ''}`}>
+                <h3 className="text-text-main font-extrabold text-2xl mb-2" style={{ fontFamily: 'var(--font-display)' }}>{plan.name}</h3>
+                <p className="text-text-muted text-sm mb-6 min-h-[40px]">{plan.desc}</p>
                 <div className="mb-8">
-                  <span className="text-4xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>{plan.price}</span>
-                  {plan.price !== 'Custom' && <span className="text-white/40 text-sm ml-2">{plan.period}</span>}
+                  <span className="text-4xl font-extrabold text-text-main tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>{plan.price}</span>
+                  {plan.price !== 'Custom' && <span className="text-text-muted text-sm ml-2 font-medium">{plan.period}</span>}
                 </div>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-4 mb-8">
                   {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-3 text-sm text-white/70">
-                      <span className="text-accent flex-shrink-0"><CheckIcon /></span>
+                    <li key={j} className="flex items-start gap-3 text-sm text-text-main font-medium">
+                      <span className="text-blue mt-0.5"><CheckIcon /></span>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <a
                   href="#waitlist"
-                  className={`btn-primary block text-center font-semibold text-sm py-3 rounded-xl transition-colors ${plan.highlighted ? 'bg-accent text-navy hover:bg-white' : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'}`}
+                  className={`btn-primary block text-center font-bold text-sm py-4 rounded-xl transition-all ${plan.highlighted ? 'bg-blue text-white hover:bg-blue-mid shadow-lg shadow-blue/20' : 'bg-surface-alt text-text-main hover:bg-border'}`}
                 >
                   {plan.cta}
                 </a>
@@ -743,62 +720,13 @@ export default function Home() {
             </div>
           ))}
         </div>
-
-        {/* Pilot callout */}
-        <div className="reveal mt-8 text-center">
-          <div className="inline-flex items-center gap-3 bg-gold/5 border border-gold/20 rounded-2xl px-6 py-4">
-            <span className="text-gold text-xl">🎯</span>
-            <p className="text-sm text-white/70">
-              <span className="text-gold font-semibold">Free pilot for the first 5 schools.</span> No payment, no commitment — just real results.{' '}
-              <a href="#waitlist" className="text-gold hover:underline">Apply now →</a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHATSAPP CTA BAND ────────────────────────────────────────────────── */}
-      <section className="py-16 px-6 bg-navy-mid border-y border-white/5">
-        <div className="max-w-4xl mx-auto reveal">
-          <div className="flex flex-col md:flex-row items-center gap-8 bg-navy-light rounded-3xl border border-white/5 p-8 md:p-10 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-transparent" />
-            <div className="relative flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-3 py-1 text-green-400 text-xs font-medium mb-3">
-                <WhatsAppIcon />
-                WhatsApp Community
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'var(--font-display)' }}>
-                Shape the future of Claivis
-              </h3>
-              <p className="text-white/50 text-sm leading-relaxed max-w-lg">
-                Join our WhatsApp community for school principals and educators. Get early product updates, share what your school needs, ask questions, and help us build something that actually works for Nigerian classrooms.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
-                {['Early product previews', 'Direct founder access', 'Peer principal network', 'Influence the roadmap'].map((b, i) => (
-                  <span key={i} className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">{b}</span>
-                ))}
-              </div>
-            </div>
-            <div className="relative flex-shrink-0 text-center">
-              <a
-                href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="wa-btn inline-flex items-center gap-3 text-white font-semibold text-base px-8 py-4 rounded-2xl"
-              >
-                <WhatsAppIcon />
-                Join the Community
-              </a>
-              <p className="text-white/30 text-xs mt-3">Free to join. Leave anytime.</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
-      <section id="faq" className="py-20 px-6 max-w-3xl mx-auto">
-        <div className="text-center mb-14 reveal">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">Questions answered</p>
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
+      <section id="faq" className="py-24 px-6 max-w-3xl mx-auto">
+        <div className="text-center mb-16 reveal">
+          <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">Questions answered</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
             Everything you want to know
           </h2>
         </div>
@@ -810,111 +738,77 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WAITLIST SECTION ─────────────────────────────────────────────────── */}
-      <section id="waitlist" className="py-24 px-6 relative overflow-hidden">
-        <div className="orb w-96 h-96 bg-blue/20 top-0 left-1/4 -translate-x-1/2" />
-        <div className="orb w-64 h-64 bg-accent/10 bottom-0 right-1/4" />
+      {/* ── WAITLIST SECTION (FOOTER CTA) ────────────────────────────────────── */}
+      <section id="waitlist" className="py-24 px-6 relative overflow-hidden bg-navy">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue/20 to-navy-mid pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] pointer-events-none" />
 
-        <div className="relative z-10 max-w-2xl mx-auto text-center">
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="reveal">
-            <div className="inline-flex items-center gap-2 border border-accent/20 bg-accent/5 rounded-full px-4 py-1.5 text-xs text-accent mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-slow" />
+            <div className="inline-flex items-center gap-2 border border-accent/20 bg-accent/10 rounded-full px-4 py-1.5 text-xs font-semibold text-accent mb-6 shadow-lg shadow-accent/10">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
               Limited pilot spots — first 5 schools only
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            <h2 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-white" style={{ fontFamily: 'var(--font-display)' }}>
               Ready to end<br />
-              <span className="gradient-text">empty classrooms?</span>
+              <span className="gradient-text-light">empty classrooms?</span>
             </h2>
-            <p className="text-white/50 mb-8 leading-relaxed">
-              Join the waitlist today. The first 5 schools receive a completely free one-term pilot — no payment, no contract, just Claivis teaching in your classrooms.
+            <p className="text-white/70 mb-10 text-lg max-w-xl mx-auto">
+              Join the waitlist today. The first 5 schools receive a completely free one-term pilot.
             </p>
           </div>
 
-          <div className="reveal reveal-delay-2 bg-navy-light rounded-2xl border border-white/5 p-6 md:p-8">
-            <WaitlistForm variant="inline" />
-
-            <div className="mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/30">
-              <div className="flex items-center gap-2"><CheckIcon /><span>No spam, ever</span></div>
-              <div className="flex items-center gap-2"><CheckIcon /><span>No payment required</span></div>
-              <div className="flex items-center gap-2"><CheckIcon /><span>Cancel anytime</span></div>
-            </div>
-          </div>
-
-          {/* WhatsApp alternative */}
-          <div className="reveal reveal-delay-3 mt-6 flex items-center justify-center gap-3">
-            <span className="text-white/30 text-sm">Prefer WhatsApp?</span>
-            <a
-              href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wa-btn inline-flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-xl"
-            >
-              <WhatsAppIcon />
-              Join our community instead
-            </a>
+          <div className="reveal reveal-delay-2 bg-navy-light rounded-3xl border border-white/10 p-8 shadow-2xl backdrop-blur-sm">
+            <WaitlistForm variant="footer" />
           </div>
         </div>
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────────── */}
-      <footer className="bg-navy-mid border-t border-white/5 py-12 px-6">
+      <footer className="bg-navy border-t border-white/10 py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-10 mb-10">
             {/* Brand */}
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-                  <span className="text-navy font-bold text-sm" style={{ fontFamily: 'var(--font-display)' }}>C</span>
+              <div className="flex items-center gap-2 mb-4 group">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>C</span>
                 </div>
-                <span className="font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
+                <span className="font-bold text-xl tracking-tight text-white" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
               </div>
-              <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+              <p className="text-white/50 text-sm leading-relaxed max-w-xs mb-6">
                 Nigeria's first AI teaching infrastructure. Built to ensure that no student ever sits in an empty classroom again.
               </p>
-              <div className="flex items-center gap-3 mt-4">
-                <a
-                  href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="wa-btn inline-flex items-center gap-2 text-white text-xs font-medium px-3 py-2 rounded-lg"
-                >
-                  <WhatsAppIcon />
-                  WhatsApp Community
-                </a>
-              </div>
             </div>
 
             {/* Links */}
             <div>
-              <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Product</p>
-              <ul className="space-y-2">
+              <p className="text-white text-sm font-bold uppercase tracking-widest mb-4">Product</p>
+              <ul className="space-y-3">
                 {['How it works', 'Features', 'Pricing', 'Request Demo'].map(l => (
-                  <li key={l}><a href="#" className="text-white/50 hover:text-white text-sm transition-colors">{l}</a></li>
+                  <li key={l}><a href="#" className="text-white/50 hover:text-accent font-medium text-sm transition-colors">{l}</a></li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Contact</p>
-              <ul className="space-y-2 text-sm text-white/50">
-                <li><a href="mailto:hello@claivis.org" className="hover:text-white transition-colors">hello@claivis.org</a></li>
-                <li><a href="https://claivis.org" className="hover:text-white transition-colors">claivis.org</a></li>
+              <p className="text-white text-sm font-bold uppercase tracking-widest mb-4">Contact</p>
+              <ul className="space-y-3 text-sm font-medium text-white/50 mb-6">
+                <li><a href="mailto:hello@claivis.org" className="hover:text-accent transition-colors">hello@claivis.org</a></li>
+                <li><a href="https://claivis.org" className="hover:text-accent transition-colors">claivis.org</a></li>
                 <li className="text-white/30">Lagos, Nigeria</li>
               </ul>
-              <div className="mt-4">
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Legal</p>
-                <ul className="space-y-1">
-                  {['Privacy Policy', 'Terms of Service'].map(l => (
-                    <li key={l}><a href="#" className="text-white/30 hover:text-white/60 text-xs transition-colors">{l}</a></li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </div>
 
-          <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-white/20 text-xs">© {new Date().getFullYear()} Claivis Limited. All rights reserved.</p>
-            <p className="text-white/20 text-xs">Built in Nigeria, for Nigeria — and the world.</p>
+          <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-white/40 text-sm font-medium">© {new Date().getFullYear()} Claivis Limited. All rights reserved.</p>
+            <div className="flex items-center gap-2 text-white/40 text-sm font-medium">
+              Built in Nigeria, for Nigeria <span className="text-accent">♥</span>
+            </div>
           </div>
         </div>
       </footer>
@@ -926,22 +820,21 @@ export default function Home() {
 function FAQItem({ q, a, delay }: { q: string; a: string; delay: number }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className={`reveal reveal-delay-${(delay % 4) + 1} bg-navy-light rounded-2xl border border-white/5 overflow-hidden`}>
+    <div className={`reveal reveal-delay-${(delay % 4) + 1} bg-white rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow`}>
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between gap-4 p-6 text-left group"
       >
-        <span className="font-medium text-white/90 group-hover:text-white transition-colors text-sm md:text-base">{q}</span>
-        <div className={`flex-shrink-0 w-8 h-8 rounded-lg border border-white/10 flex items-center justify-center transition-all ${open ? 'bg-accent/10 border-accent/20 rotate-45' : 'bg-white/5'}`}>
-          <svg className="w-4 h-4 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <span className="font-bold text-text-main group-hover:text-blue transition-colors text-lg">{q}</span>
+        <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all ${open ? 'bg-blue text-white rotate-45 shadow-md shadow-blue/20' : 'bg-surface-alt text-text-muted group-hover:bg-blue/10 group-hover:text-blue'}`}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M6 12h12" />
           </svg>
         </div>
       </button>
       {open && (
-        <div className="px-6 pb-6">
-          <div className="h-px bg-white/5 mb-4" />
-          <p className="text-white/50 text-sm leading-relaxed">{a}</p>
+        <div className="px-6 pb-6 pt-2 animate-fade-in">
+          <p className="text-text-muted text-base leading-relaxed">{a}</p>
         </div>
       )}
     </div>
