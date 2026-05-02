@@ -55,12 +55,46 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !name) { setMsg('Please enter your name and email.'); return }
+    const trimmedName = name.trim()
+    const trimmedEmail = email.trim()
+    const trimmedSchool = school.trim()
+
+    if (!trimmedEmail || !trimmedName) {
+      setState('error')
+      setMsg('Please enter your name and email.')
+      return
+    }
     setState('loading')
-    // Simulate API call — replace with real endpoint (e.g. Loops, Mailchimp, Supabase)
-    await new Promise(r => setTimeout(r, 1200))
-    setState('success')
-    setMsg('You\'re on the list! We\'ll be in touch very soon.')
+    setMsg('')
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: trimmedName,
+          email: trimmedEmail,
+          school: trimmedSchool,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        setState('error')
+        setMsg(data.error || 'Something went wrong. Please try again.')
+        return
+      }
+
+      setState('success')
+      setMsg(data.message || 'You\'re on the list! We\'ll be in touch very soon.')
+      setName('')
+      setEmail('')
+      setSchool('')
+    } catch {
+      setState('error')
+      setMsg('Unable to submit right now. Please try again.')
+    }
   }
 
   if (state === 'success') {
