@@ -682,7 +682,7 @@ export default function Home() {
       </section>
 
       {/* ── CHALK SECTION — THE COMPARISON ─────────────────────────────────── */}
-      <section className="chalk-section py-24 px-6">
+      <section className="bg-blue py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 reveal">
             <p className="text-accent text-sm font-bold tracking-widest uppercase mb-3">The honest comparison</p>
@@ -807,7 +807,7 @@ export default function Home() {
       </section>
 
       {/* ── WAITLIST SECTION (FOOTER CTA) ────────────────────────────────────── */}
-      <section id="waitlist" className="py-24 px-6 relative overflow-hidden bg-navy">
+      <section id="waitlist" className="py-24 px-6 relative overflow-hidden bg-blue">
         <div className="absolute inset-0 bg-gradient-to-br from-blue/20 to-navy-mid pointer-events-none" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] pointer-events-none" />
 
@@ -829,7 +829,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="reveal reveal-delay-2 bg-navy-light rounded-3xl border border-white/10 p-8 shadow-2xl backdrop-blur-sm">
+          <div className="reveal reveal-delay-2 mt-8 max-w-2xl mx-auto">
             <WaitlistForm variant="footer" />
           </div>
         </div>
