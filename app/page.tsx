@@ -408,10 +408,10 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s, i) => (
-            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} bg-white rounded-[2rem] p-6 md:p-8 border border-border shadow-sm relative overflow-hidden group flex flex-col justify-between h-full`}>
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="mb-8">
-                <div className="text-text-main mb-3 tracking-tighter font-extrabold" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 3.5vw, 3rem)' }}>{s.num}</div>
+            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} bg-white rounded-[2rem] p-6 md:p-8 border border-border shadow-sm relative overflow-hidden group flex flex-col justify-between h-full transition-shadow duration-300 hover:shadow-xl hover:shadow-blue/5`}>
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue via-blue to-accent opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out" />
+              <div className="mb-4">
+                <div className="text-text-main tracking-tighter font-semibold" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 3.5vw, 3rem)' }}>{s.num}</div>
               </div>
               <div>
                 <p className="text-text-main font-semibold leading-tight text-lg mb-1">{s.label}</p>
