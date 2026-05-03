@@ -128,6 +128,130 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
   )
 }
 
+
+function BrowserChrome() {
+  return (
+    <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
+      <div className="flex gap-2">
+        <div className="w-3 h-3 rounded-full bg-red-400" />
+        <div className="w-3 h-3 rounded-full bg-amber-400" />
+        <div className="w-3 h-3 rounded-full bg-green-400" />
+      </div>
+      <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+        <span className="opacity-50 mr-1">🔒</span> claivis.org/dashboard
+      </div>
+    </div>
+  )
+}
+
+function MockupContent({ step }: { step: number }) {
+  if (step === 0) return (
+    <div className="h-full border-2 border-dashed border-blue/30 rounded-2xl bg-blue/5 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
+      <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-blue">
+        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+      </div>
+      <h4 className="text-xl font-bold text-text-main mb-2">Upload Curriculum</h4>
+      <p className="text-text-muted text-sm max-w-xs mb-6">Drag and drop your PDF, Word, or Excel scheme of work here.</p>
+      <div className="bg-white rounded-xl shadow-sm border border-border p-3 w-full max-w-xs flex items-center gap-3 animate-fade-up">
+        <div className="w-8 h-8 bg-green-100 rounded text-green-600 flex items-center justify-center text-xs font-bold">XLS</div>
+        <div className="flex-1 text-left">
+          <div className="text-xs font-bold text-text-main">Term_1_Scheme.xlsx</div>
+          <div className="text-[10px] text-text-muted">Parsing 12 subjects...</div>
+        </div>
+        <div className="w-4 h-4 border-2 border-t-blue border-border rounded-full animate-spin" />
+      </div>
+    </div>
+  )
+  if (step === 1) return (
+    <div className="h-full flex flex-col p-6 bg-base">
+      <div className="flex justify-between items-center mb-4">
+        <h4 className="font-bold text-text-main">Weekly Schedule</h4>
+        <div className="text-xs font-bold text-blue bg-blue/10 px-3 py-1 rounded-full">SS2 Science</div>
+      </div>
+      <div className="flex-1 bg-white border border-border rounded-xl shadow-sm overflow-hidden flex">
+        <div className="w-16 border-r border-border bg-base text-[10px] text-text-muted font-medium py-2 flex flex-col justify-around text-center">
+          <span>8:00</span><span>9:00</span><span>10:00</span><span>11:00</span><span>12:00</span>
+        </div>
+        <div className="flex-1 grid grid-cols-3 divide-x divide-border">
+          {['Mon', 'Tue', 'Wed'].map((day, d) => (
+            <div key={day} className="relative">
+              <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
+              <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
+                <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
+                <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
+              </div>
+              <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
+                <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
+                <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
+              </div>
+              {d === 1 && (
+                <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
+                  <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
+                  <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+  if (step === 2) return (
+    <div className="h-full bg-white rounded-xl shadow-md border border-border overflow-hidden flex flex-col relative">
+      <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
+        <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
+          <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
+        </div>
+        <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
+          <p className="text-white text-sm text-center">"Today, we will be looking at Newton's Laws of Motion..."</p>
+        </div>
+      </div>
+      <div className="h-14 bg-white border-t border-border flex items-center px-4 justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <span className="text-xs font-bold text-text-main">LIVE</span>
+          <span className="text-xs text-text-muted border-l border-border pl-2 ml-1">Physics SS2</span>
+        </div>
+        <div className="flex gap-1">
+          {[3, 5, 8, 6, 4, 7, 9, 5].map((h, i) => (
+            <div key={i} className="w-1 rounded-full bg-blue animate-pulse" style={{ height: `${h * 1.5}px`, animationDelay: `${i * 0.1}s` }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+  if (step === 3) return (
+    <div className="h-full bg-white rounded-xl shadow-md border border-border flex flex-col p-4">
+      <h4 className="font-bold text-text-main mb-4 border-b border-border pb-2">Live Session Transcript</h4>
+      <div className="flex-1 space-y-4 overflow-hidden relative">
+        <div className="flex gap-3">
+          <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl">🤖</div>
+          <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-3 text-sm text-text-main">
+            Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
+          </div>
+        </div>
+        <div className="flex gap-3 flex-row-reverse animate-fade-up">
+          <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-sm font-bold text-gold">S</div>
+          <div className="flex-1 bg-gold/5 border border-gold/20 rounded-2xl rounded-tr-sm p-3 text-sm text-text-main">
+            <span className="text-[10px] text-text-muted block mb-1">Student 🎤</span>
+            Yes, does that mean a heavier object always hits the ground faster?
+          </div>
+        </div>
+        <div className="flex gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
+          <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl shadow-lg shadow-blue/20">🤖</div>
+          <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-3 text-sm shadow-md relative">
+            <div className="absolute -left-1 top-3 w-3 h-3 bg-blue rotate-45"></div>
+            That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+  return null
+}
+
 // ── Main Page ──────────────────────────────────────────────────────────────────
 export default function Home() {
   useReveal()
@@ -449,9 +573,11 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative pb-32">
+          
+          {/* Desktop Layout (Sticky Stacking Cards) */}
+          <div className="hidden lg:flex flex-row gap-16 lg:gap-24 items-start relative pb-32">
             {/* Left side: Static Steps */}
-            <div className="lg:w-[45%] lg:sticky top-32 space-y-10 relative z-10 shrink-0">
+            <div className="w-[45%] sticky top-32 space-y-10 relative z-10 shrink-0">
               {/* Timeline line */}
               <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-border hidden md:block" />
               
@@ -474,189 +600,53 @@ export default function Home() {
             </div>
 
             {/* Right side: Stacking Cards */}
-            <div className="lg:w-[55%] w-full space-y-[40vh] pt-10 lg:pt-0">
-              
-              {/* Card 1 */}
-              <div 
-                ref={el => { cardRefs.current[0] = el }}
-                data-index={0}
-                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
-                style={{ zIndex: 10, transform: activeStep > 0 ? `scale(${1 - (activeStep - 0) * 0.04})` : 'scale(1)' }}
-              >
-                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                  </div>
-                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
-                    <span className="opacity-50">🔒</span> claivis.org/dashboard
+            <div className="w-[55%] space-y-[40vh]">
+              {[0, 1, 2, 3].map((stepIndex) => (
+                <div 
+                  key={stepIndex}
+                  ref={el => { cardRefs.current[stepIndex] = el }}
+                  data-index={stepIndex}
+                  className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
+                  style={{ 
+                    zIndex: (stepIndex + 1) * 10, 
+                    transform: activeStep > stepIndex ? `scale(${1 - (activeStep - stepIndex) * 0.04})` : 'scale(1)' 
+                  }}
+                >
+                  <BrowserChrome />
+                  <div className="flex-1 p-6 relative overflow-hidden bg-base">
+                    <MockupContent step={stepIndex} />
                   </div>
                 </div>
-                <div className="flex-1 p-6 relative overflow-hidden bg-base">
-                  <div className="h-full border-2 border-dashed border-blue/30 rounded-2xl bg-blue/5 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-blue">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                    </div>
-                    <h4 className="text-xl font-bold text-text-main mb-2">Upload Curriculum</h4>
-                    <p className="text-text-muted text-sm max-w-xs mb-6">Drag and drop your PDF, Word, or Excel scheme of work here.</p>
-                    <div className="bg-white rounded-xl shadow-sm border border-border p-3 w-full max-w-xs flex items-center gap-3 animate-fade-up">
-                      <div className="w-8 h-8 bg-green-100 rounded text-green-600 flex items-center justify-center text-xs font-bold">XLS</div>
-                      <div className="flex-1 text-left">
-                        <div className="text-xs font-bold text-text-main">Term_1_Scheme.xlsx</div>
-                        <div className="text-[10px] text-text-muted">Parsing 12 subjects...</div>
-                      </div>
-                      <div className="w-4 h-4 border-2 border-t-blue border-border rounded-full animate-spin" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 2 */}
-              <div 
-                ref={el => { cardRefs.current[1] = el }}
-                data-index={1}
-                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
-                style={{ zIndex: 20, transform: activeStep > 1 ? `scale(${1 - (activeStep - 1) * 0.04})` : 'scale(1)' }}
-              >
-                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                  </div>
-                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
-                    <span className="opacity-50">🔒</span> claivis.org/dashboard
-                  </div>
-                </div>
-                <div className="h-full flex flex-col p-6 bg-base">
-                  <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-bold text-text-main">Weekly Schedule</h4>
-                    <div className="text-xs font-bold text-blue bg-blue/10 px-3 py-1 rounded-full">SS2 Science</div>
-                  </div>
-                  <div className="flex-1 bg-white border border-border rounded-xl shadow-sm overflow-hidden flex">
-                    {/* Time col */}
-                    <div className="w-16 border-r border-border bg-base text-[10px] text-text-muted font-medium py-2 flex flex-col justify-around text-center">
-                      <span>8:00</span><span>9:00</span><span>10:00</span><span>11:00</span><span>12:00</span>
-                    </div>
-                    {/* Days */}
-                    <div className="flex-1 grid grid-cols-3 divide-x divide-border">
-                      {['Mon', 'Tue', 'Wed'].map((day, d) => (
-                        <div key={day} className="relative">
-                          <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
-                          <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
-                            <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
-                            <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
-                          </div>
-                          <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
-                            <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
-                            <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
-                          </div>
-                          {d === 1 && (
-                            <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
-                              <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
-                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 3 */}
-              <div 
-                ref={el => { cardRefs.current[2] = el }}
-                data-index={2}
-                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
-                style={{ zIndex: 30, transform: activeStep > 2 ? `scale(${1 - (activeStep - 2) * 0.04})` : 'scale(1)' }}
-              >
-                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                  </div>
-                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
-                    <span className="opacity-50">🔒</span> claivis.org/dashboard
-                  </div>
-                </div>
-                <div className="flex-1 p-6 relative overflow-hidden bg-base">
-                  <div className="h-full bg-white rounded-xl shadow-md border border-border overflow-hidden flex flex-col relative">
-                    <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
-                      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
-                      <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
-                        <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
-                        <p className="text-white text-sm text-center">"Today, we will be looking at Newton's Laws of Motion..."</p>
-                      </div>
-                    </div>
-                    <div className="h-14 bg-white border-t border-border flex items-center px-4 justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                        <span className="text-xs font-bold text-text-main">LIVE</span>
-                        <span className="text-xs text-text-muted border-l border-border pl-2 ml-1">Physics SS2</span>
-                      </div>
-                      <div className="flex gap-1">
-                        {[3, 5, 8, 6, 4, 7, 9, 5].map((h, i) => (
-                          <div key={i} className="w-1 rounded-full bg-blue animate-pulse" style={{ height: `${h * 1.5}px`, animationDelay: `${i * 0.1}s` }} />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 4 */}
-              <div 
-                ref={el => { cardRefs.current[3] = el }}
-                data-index={3}
-                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
-                style={{ zIndex: 40, transform: 'scale(1)' }}
-              >
-                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                  </div>
-                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
-                    <span className="opacity-50">🔒</span> claivis.org/dashboard
-                  </div>
-                </div>
-                <div className="flex-1 p-6 relative overflow-hidden bg-base">
-                  <div className="h-full bg-white rounded-xl shadow-md border border-border flex flex-col p-4">
-                    <h4 className="font-bold text-text-main mb-4 border-b border-border pb-2">Live Session Transcript</h4>
-                    <div className="flex-1 space-y-4 overflow-hidden relative">
-                      <div className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl">🤖</div>
-                        <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-3 text-sm text-text-main">
-                          Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
-                        </div>
-                      </div>
-                      <div className="flex gap-3 flex-row-reverse animate-fade-up">
-                        <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-sm font-bold text-gold">S</div>
-                        <div className="flex-1 bg-gold/5 border border-gold/20 rounded-2xl rounded-tr-sm p-3 text-sm text-text-main">
-                          <span className="text-[10px] text-text-muted block mb-1">Student 🎤</span>
-                          Yes, does that mean a heavier object always hits the ground faster?
-                        </div>
-                      </div>
-                      <div className="flex gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
-                        <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl shadow-lg shadow-blue/20">🤖</div>
-                        <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-3 text-sm shadow-md relative">
-                          <div className="absolute -left-1 top-3 w-3 h-3 bg-blue rotate-45"></div>
-                          That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              ))}
             </div>
+          </div>
+
+          {/* Mobile Layout (Interleaved Text and Cards) */}
+          <div className="flex lg:hidden flex-col gap-20">
+            {howSteps.map((step, i) => (
+              <div key={i} className="flex flex-col gap-8">
+                {/* Text Block */}
+                <div className="flex items-start gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-blue text-white shadow-lg shadow-blue/20 flex items-center justify-center flex-shrink-0 border-2 border-blue font-bold text-xl font-mono">
+                    {step.n}
+                  </div>
+                  <div className="pt-2">
+                    <h3 className="text-2xl font-bold mb-2 text-text-main" style={{ fontFamily: 'var(--font-display)' }}>
+                      {step.title}
+                    </h3>
+                    <p className="text-text-muted leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+                
+                {/* Mockup Card */}
+                <div className="h-[450px] sm:h-[500px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col">
+                  <BrowserChrome />
+                  <div className="flex-1 p-4 sm:p-6 relative overflow-hidden bg-base">
+                    <MockupContent step={i} />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -875,7 +865,7 @@ export default function Home() {
           <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm font-medium">© {new Date().getFullYear()} Claivis Limited. All rights reserved.</p>
             <div className="flex items-center gap-2 text-white/40 text-sm font-medium">
-              Built in Nigeria, for Nigeria <span className="text-accent">♥</span>
+              Built in Nigeria, for Nigeria — and the world.<span className="text-accent">♥</span>
             </div>
           </div>
         </div>
