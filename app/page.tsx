@@ -300,7 +300,7 @@ export default function Home() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {[['How it works', '#how'], ['Features', '#features'], ['Pricing', '#pricing'], ['FAQ', '#faq']].map(([label, href]) => (
+            {[['How it works', '#how'], ['Features', '#features'], ['FAQ', '#faq']].map(([label, href]) => ( // ['Pricing', '#pricing'] is in between Features and FAQ
               <a key={label} href={href} className="text-sm font-medium text-text-muted hover:text-blue transition-colors">{label}</a>
             ))}
           </div>
@@ -330,7 +330,7 @@ export default function Home() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg px-6 py-4 space-y-4">
-            {[['How it works', '#how'], ['Features', '#features'], ['Pricing', '#pricing'], ['FAQ', '#faq']].map(([label, href]) => (
+            {[['How it works', '#how'], ['Features', '#features'], ['FAQ', '#faq']].map(([label, href]) => ( // ['Pricing', '#pricing'] is in between Features and FAQ
               <a key={label} href={href} onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-text-muted hover:text-blue py-2">{label}</a>
             ))}
             <div className="pt-4 border-t border-border space-y-3">
@@ -745,7 +745,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PRICING ─────────────────────────────────────────────────────────── */}
+      {/* ── PRICING ───────────────────────────────────────────────────────────
       <section id="pricing" className="py-24 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-16 reveal">
           <p className="text-blue text-sm font-bold tracking-widest uppercase mb-3">Simple pricing</p>
@@ -788,7 +788,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
       <section id="faq" className="py-24 px-6 max-w-3xl mx-auto">
@@ -856,7 +856,7 @@ export default function Home() {
             <div>
               <p className="text-white text-sm font-bold uppercase tracking-widest mb-4">Product</p>
               <ul className="space-y-3">
-                {['How it works', 'Features', 'Pricing', 'Request Demo'].map(l => (
+                {['How it works', 'Features', 'Request Demo'].map(l => ( // 'Pricing' is in between Features and Request Demo
                   <li key={l}><a href="#" className="text-white/50 hover:text-accent font-medium text-sm transition-colors">{l}</a></li>
                 ))}
               </ul>
