@@ -176,18 +176,21 @@ function MockupContent({ step }: { step: number }) {
           {['Mon', 'Tue', 'Wed'].map((day, d) => (
             <div key={day} className="relative">
               <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
-              <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
-                <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
-                <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
+              <div className="absolute top-[10%] left-1 right-1 sm:left-2 sm:right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-1 sm:p-2 flex flex-col justify-center hover:bg-blue hover:text-white transition-colors cursor-pointer group overflow-hidden">
+                <div className="text-[9px] sm:text-[10px] font-bold text-blue group-hover:text-white leading-tight truncate">Physics</div>
+                <div className="text-[7px] sm:text-[8px] text-text-muted group-hover:text-white/80 truncate mt-0.5">Period 1</div>
               </div>
-              <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
-                <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
-                <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
+              <div className="absolute top-[35%] left-1 right-1 sm:left-2 sm:right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-1 sm:p-2 flex flex-col justify-center hover:bg-gold hover:text-white transition-colors cursor-pointer group overflow-hidden">
+                <div className="text-[9px] sm:text-[10px] font-bold text-gold group-hover:text-white leading-tight truncate">Math</div>
+                <div className="text-[7px] sm:text-[8px] text-text-muted group-hover:text-white/80 truncate mt-0.5">Period 2</div>
               </div>
               {d === 1 && (
-                <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
-                  <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
-                  <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
+                <div className="absolute top-[65%] left-1 right-1 sm:left-2 sm:right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-1 sm:p-2 flex flex-col justify-center hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20 overflow-hidden">
+                  <div className="text-[9px] sm:text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between items-center gap-0.5 w-full leading-tight">
+                    <span className="truncate">Biology</span>
+                    <span className="animate-pulse flex-shrink-0 text-[8px] sm:text-[10px]">●</span>
+                  </div>
+                  <div className="text-[7px] sm:text-[8px] text-text-muted group-hover:text-white/80 truncate mt-0.5">Claivis Agent</div>
                 </div>
               )}
             </div>
