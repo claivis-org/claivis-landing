@@ -78,14 +78,14 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-3 ${variant === 'inline' ? 'max-w-lg mx-auto' : ''}`}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <form onSubmit={handleSubmit} className={`space-y-4 ${variant === 'inline' ? 'max-w-lg mx-auto' : ''}`}>
+      <div className="flex flex-col md:flex-row gap-4">
         <input
           type="text"
           placeholder="Your name"
           value={name}
           onChange={e => setName(e.target.value)}
-          className={`input-glow w-full rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
+          className={`input-glow flex-1 rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
           required
         />
         <input
@@ -93,22 +93,22 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
           placeholder="School name (optional)"
           value={school}
           onChange={e => setSchool(e.target.value)}
-          className={`input-glow w-full rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
+          className={`input-glow flex-1 rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
         />
       </div>
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col md:flex-row gap-4">
         <input
           type="email"
           placeholder="School email address"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className={`input-glow flex-1 rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
+          className={`input-glow flex-[2] rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-navy-mid border border-white/10 text-white placeholder-white/30 focus:border-accent' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
           required
         />
         <button
           type="submit"
           disabled={state === 'loading'}
-          className={`btn-primary flex-shrink-0 font-semibold text-sm px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed ${isFooter ? 'bg-accent text-navy hover:bg-white' : 'bg-blue text-white hover:bg-blue/90 shadow-lg shadow-blue/20 hover:shadow-blue/30'}`}
+          className={`btn-primary flex-1 font-semibold text-sm px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed ${isFooter ? 'bg-accent text-navy hover:bg-white' : 'bg-blue text-white hover:bg-blue/90 shadow-lg shadow-blue/20 hover:shadow-blue/30'}`}
         >
           {state === 'loading' ? (
             <span className="flex items-center gap-2">
@@ -348,7 +348,8 @@ export default function Home() {
 
           {/* Headline */}
           <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6 text-text-main" style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
-            When the teacher is absent,<br />
+            When the teacher<br />
+            is absent,<br />
             <span className="gradient-text">Claivis shows up.</span>
           </h1>
 
@@ -358,7 +359,7 @@ export default function Home() {
           </p>
 
           {/* Waitlist form */}
-          <div className="max-w-xl mx-auto mb-8 bg-white p-2 rounded-2xl shadow-xl shadow-blue/5 border border-border">
+          <div className="max-w-2xl mx-auto mb-8">
             <WaitlistForm variant="hero" />
           </div>
 
@@ -405,13 +406,17 @@ export default function Home() {
           <p className="text-text-muted mt-4 max-w-2xl mx-auto text-lg">It is happening in classrooms across the country right now, every single school day.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s, i) => (
-            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} bg-white rounded-3xl p-8 border border-border shadow-sm relative overflow-hidden group`}>
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="stat-number text-text-main mb-2 tracking-tighter">{s.num}</div>
-              <p className="text-text-main font-semibold leading-snug mb-1">{s.label}</p>
-              <p className="text-text-muted text-sm">{s.sub}</p>
+            <div key={i} className={`card-hover reveal reveal-delay-${i + 1} bg-white rounded-[2rem] p-6 md:p-8 border border-border shadow-sm relative overflow-hidden group flex flex-col justify-between h-full`}>
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="mb-8">
+                <div className="text-text-main mb-3 tracking-tighter font-extrabold" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 3.5vw, 3rem)' }}>{s.num}</div>
+              </div>
+              <div>
+                <p className="text-text-main font-semibold leading-tight text-lg mb-1">{s.label}</p>
+                <p className="text-text-muted text-sm">{s.sub}</p>
+              </div>
             </div>
           ))}
         </div>
