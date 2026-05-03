@@ -261,25 +261,30 @@ export default function Home() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40)
+      
+      // Calculate active step for desktop cards
+      if (window.innerWidth >= 1024) {
+        let currentStep = 0
+        cardRefs.current.forEach((ref, index) => {
+          if (ref) {
+            const rect = ref.getBoundingClientRect()
+            // If the card's top is in the top 60% of the viewport, it's active
+            if (rect.top < window.innerHeight * 0.6) {
+              currentStep = index
+            }
+          }
+        })
+        setActiveStep(currentStep)
+      }
+    }
+    
+    window.addEventListener('scroll', onScroll, { passive: true })
+    // Trigger once on mount
+    onScroll()
+    
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = Number(entry.target.getAttribute('data-index'))
-          setActiveStep(index)
-        }
-      })
-    }, { rootMargin: '-40% 0px -50% 0px' })
-
-    cardRefs.current.forEach(ref => {
-      if (ref) observer.observe(ref)
-    })
-    return () => observer.disconnect()
   }, [])
 
   const stats = [
