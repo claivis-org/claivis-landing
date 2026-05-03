@@ -113,8 +113,8 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
           {state === 'loading' ? (
             <span className="flex items-center gap-2">
               <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
               Joining...
             </span>
@@ -134,11 +134,28 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Number(entry.target.getAttribute('data-index'))
+          setActiveStep(index)
+        }
+      })
+    }, { rootMargin: '-40% 0px -50% 0px' })
+
+    cardRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref)
+    })
+    return () => observer.disconnect()
   }, [])
 
   const stats = [
@@ -268,7 +285,7 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-base text-text-main overflow-x-hidden">
+    <div className="min-h-screen bg-base text-text-main">
 
       {/* ── NAV ─────────────────────────────────────────────────────────────── */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-border shadow-sm py-3' : 'bg-transparent py-5'}`}>
@@ -333,7 +350,7 @@ export default function Home() {
         {/* Abstract Background Elements */}
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-blue/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
-        
+
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNDQkQ1RTEiIGZpbGwtb3BhY2l0eT0iMC41Ii8+PC9zdmc+')] [mask-image:linear-gradient(to_bottom,white,transparent)] pointer-events-none opacity-60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -377,7 +394,7 @@ export default function Home() {
             </div>
             <span className="hidden sm:block text-border">|</span>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <svg className="w-5 h-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>
               <span>Built for WAEC curriculum</span>
             </div>
           </div>
@@ -422,7 +439,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS (REDESIGNED) ───────────────────────────────────────── */}
+      {/* ── HOW IT WORKS (STACKING CARDS SCROLL EFFECT) ──────────────────── */}
       <section id="how" className="py-24 bg-white border-y border-border">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20 reveal">
@@ -432,23 +449,22 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            {/* Left side: Steps */}
-            <div className="space-y-10 relative">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative pb-32">
+            {/* Left side: Static Steps */}
+            <div className="lg:w-[45%] lg:sticky top-32 space-y-10 relative z-10 shrink-0">
               {/* Timeline line */}
               <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-border hidden md:block" />
               
               {howSteps.map((step, i) => (
                 <div 
                   key={i} 
-                  className={`reveal flex items-start gap-6 relative z-10 cursor-pointer transition-all duration-300 ${activeStep === i ? 'opacity-100 translate-x-2' : 'opacity-50 hover:opacity-80'}`}
-                  onClick={() => setActiveStep(i)}
+                  className={`flex items-start gap-6 relative transition-all duration-500 ease-out ${activeStep === i ? 'opacity-100 translate-x-2' : 'opacity-40'}`}
                 >
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border-2 transition-colors ${activeStep === i ? 'bg-blue text-white border-blue shadow-lg shadow-blue/20' : 'bg-surface border-border text-text-muted'}`}>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border-2 transition-all duration-500 ${activeStep >= i ? 'bg-blue text-white border-blue shadow-lg shadow-blue/20 scale-105' : 'bg-surface border-border text-text-muted'}`}>
                     <span className="font-bold text-xl font-mono">{step.n}</span>
                   </div>
                   <div className="pt-3">
-                    <h3 className={`text-2xl font-bold mb-2 ${activeStep === i ? 'text-text-main' : 'text-text-main'}`} style={{ fontFamily: 'var(--font-display)' }}>
+                    <h3 className={`text-2xl font-bold mb-2 transition-colors ${activeStep === i ? 'text-text-main' : 'text-text-main'}`} style={{ fontFamily: 'var(--font-display)' }}>
                       {step.title}
                     </h3>
                     <p className="text-text-muted leading-relaxed text-lg">{step.desc}</p>
@@ -457,26 +473,27 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Right side: Web Mockups */}
-            <div className="relative reveal reveal-delay-2 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex items-center justify-center p-6">
+            {/* Right side: Stacking Cards */}
+            <div className="lg:w-[55%] w-full space-y-[40vh] pt-10 lg:pt-0">
               
-              {/* Fake Browser Chrome */}
-              <div className="absolute top-0 left-0 w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-amber-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
+              {/* Card 1 */}
+              <div 
+                ref={el => { cardRefs.current[0] = el }}
+                data-index={0}
+                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
+                style={{ zIndex: 10, transform: activeStep > 0 ? `scale(${1 - (activeStep - 0) * 0.04})` : 'scale(1)' }}
+              >
+                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+                    <span className="opacity-50">🔒</span> claivis.org/dashboard
+                  </div>
                 </div>
-                <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
-                  <span className="opacity-50">🔒</span> claivis.org/dashboard
-                </div>
-              </div>
-
-              {/* Mockup Content Container */}
-              <div className="w-full h-full pt-12 relative">
-                
-                {/* Step 1 Mockup: Upload */}
-                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                <div className="flex-1 p-6 relative overflow-hidden bg-base">
                   <div className="h-full border-2 border-dashed border-blue/30 rounded-2xl bg-blue/5 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
                     <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-blue">
                       <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
@@ -493,106 +510,152 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Step 2 Mockup: Schedule */}
-                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                  <div className="h-full flex flex-col">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="font-bold text-text-main">Weekly Schedule</h4>
-                      <div className="text-xs font-bold text-blue bg-blue/10 px-3 py-1 rounded-full">SS2 Science</div>
+              {/* Card 2 */}
+              <div 
+                ref={el => { cardRefs.current[1] = el }}
+                data-index={1}
+                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
+                style={{ zIndex: 20, transform: activeStep > 1 ? `scale(${1 - (activeStep - 1) * 0.04})` : 'scale(1)' }}
+              >
+                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+                    <span className="opacity-50">🔒</span> claivis.org/dashboard
+                  </div>
+                </div>
+                <div className="h-full flex flex-col p-6 bg-base">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-bold text-text-main">Weekly Schedule</h4>
+                    <div className="text-xs font-bold text-blue bg-blue/10 px-3 py-1 rounded-full">SS2 Science</div>
+                  </div>
+                  <div className="flex-1 bg-white border border-border rounded-xl shadow-sm overflow-hidden flex">
+                    {/* Time col */}
+                    <div className="w-16 border-r border-border bg-base text-[10px] text-text-muted font-medium py-2 flex flex-col justify-around text-center">
+                      <span>8:00</span><span>9:00</span><span>10:00</span><span>11:00</span><span>12:00</span>
                     </div>
-                    <div className="flex-1 bg-white border border-border rounded-xl shadow-sm overflow-hidden flex">
-                      {/* Time col */}
-                      <div className="w-16 border-r border-border bg-base text-[10px] text-text-muted font-medium py-2 flex flex-col justify-around text-center">
-                        <span>8:00</span><span>9:00</span><span>10:00</span><span>11:00</span><span>12:00</span>
-                      </div>
-                      {/* Days */}
-                      <div className="flex-1 grid grid-cols-3 divide-x divide-border">
-                        {['Mon', 'Tue', 'Wed'].map((day, d) => (
-                          <div key={day} className="relative">
-                            <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
-                            <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
-                              <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
-                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
-                            </div>
-                            <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
-                              <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
-                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
-                            </div>
-                            {d === 1 && (
-                              <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
-                                <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
-                                <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
-                              </div>
-                            )}
+                    {/* Days */}
+                    <div className="flex-1 grid grid-cols-3 divide-x divide-border">
+                      {['Mon', 'Tue', 'Wed'].map((day, d) => (
+                        <div key={day} className="relative">
+                          <div className="text-center text-[10px] font-bold text-text-muted py-1 border-b border-border bg-base">{day}</div>
+                          <div className="absolute top-[10%] left-2 right-2 h-[20%] bg-blue/10 border border-blue/20 rounded-md p-2 hover:bg-blue hover:text-white transition-colors cursor-pointer group">
+                            <div className="text-[10px] font-bold text-blue group-hover:text-white">Physics</div>
+                            <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 1</div>
                           </div>
+                          <div className="absolute top-[35%] left-2 right-2 h-[20%] bg-gold/10 border border-gold/20 rounded-md p-2 hover:bg-gold hover:text-white transition-colors cursor-pointer group">
+                            <div className="text-[10px] font-bold text-gold group-hover:text-white">Math</div>
+                            <div className="text-[8px] text-text-muted group-hover:text-white/80">Period 2</div>
+                          </div>
+                          {d === 1 && (
+                            <div className="absolute top-[65%] left-2 right-2 h-[20%] bg-accent/10 border border-accent/20 rounded-md p-2 hover:bg-accent-dark hover:text-white transition-colors cursor-pointer group shadow-lg shadow-accent/20">
+                              <div className="text-[10px] font-bold text-accent-dark group-hover:text-white flex justify-between">Biology <span className="animate-pulse">●</span></div>
+                              <div className="text-[8px] text-text-muted group-hover:text-white/80">Claivis Agent</div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div 
+                ref={el => { cardRefs.current[2] = el }}
+                data-index={2}
+                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
+                style={{ zIndex: 30, transform: activeStep > 2 ? `scale(${1 - (activeStep - 2) * 0.04})` : 'scale(1)' }}
+              >
+                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+                    <span className="opacity-50">🔒</span> claivis.org/dashboard
+                  </div>
+                </div>
+                <div className="flex-1 p-6 relative overflow-hidden bg-base">
+                  <div className="h-full bg-white rounded-xl shadow-md border border-border overflow-hidden flex flex-col relative">
+                    <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
+                      <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
+                        <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
+                        <p className="text-white text-sm text-center">"Today, we will be looking at Newton's Laws of Motion..."</p>
+                      </div>
+                    </div>
+                    <div className="h-14 bg-white border-t border-border flex items-center px-4 justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                        <span className="text-xs font-bold text-text-main">LIVE</span>
+                        <span className="text-xs text-text-muted border-l border-border pl-2 ml-1">Physics SS2</span>
+                      </div>
+                      <div className="flex gap-1">
+                        {[3, 5, 8, 6, 4, 7, 9, 5].map((h, i) => (
+                          <div key={i} className="w-1 rounded-full bg-blue animate-pulse" style={{ height: `${h * 1.5}px`, animationDelay: `${i * 0.1}s` }} />
                         ))}
                       </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Step 3 Mockup: Live Teaching */}
-                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                   <div className="h-full bg-white rounded-xl shadow-md border border-border overflow-hidden flex flex-col relative">
-                     {/* Video Area */}
-                     <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
-                       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
-                       <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
-                         <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
-                         {/* Speaking ripple */}
-                         <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
-                       </div>
-                       <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
-                         <p className="text-white text-sm text-center">"Today, we will be looking at Newton's Laws of Motion..."</p>
-                       </div>
-                     </div>
-                     {/* Dashboard Bar */}
-                     <div className="h-14 bg-white border-t border-border flex items-center px-4 justify-between">
-                       <div className="flex items-center gap-2">
-                         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                         <span className="text-xs font-bold text-text-main">LIVE</span>
-                         <span className="text-xs text-text-muted border-l border-border pl-2 ml-1">Physics SS2</span>
-                       </div>
-                       <div className="flex gap-1">
-                          {[3,5,8,6,4,7,9,5].map((h, i) => (
-                            <div key={i} className="w-1 rounded-full bg-blue animate-pulse" style={{ height: `${h * 1.5}px`, animationDelay: `${i * 0.1}s` }} />
-                          ))}
-                       </div>
-                     </div>
-                   </div>
-                </div>
-
-                {/* Step 4 Mockup: Q&A */}
-                <div className={`absolute inset-0 p-6 transition-all duration-500 ease-in-out ${activeStep === 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                   <div className="h-full bg-white rounded-xl shadow-md border border-border flex flex-col p-4">
-                     <h4 className="font-bold text-text-main mb-4 border-b border-border pb-2">Live Session Transcript</h4>
-                     <div className="flex-1 space-y-4 overflow-hidden relative">
-                       <div className="flex gap-3">
-                         <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl">🤖</div>
-                         <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-3 text-sm text-text-main">
-                           Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
-                         </div>
-                       </div>
-                       <div className="flex gap-3 flex-row-reverse animate-fade-up">
-                         <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-sm font-bold text-gold">S</div>
-                         <div className="flex-1 bg-gold/5 border border-gold/20 rounded-2xl rounded-tr-sm p-3 text-sm text-text-main">
-                           <span className="text-[10px] text-text-muted block mb-1">Student 🎤</span>
-                           Yes, does that mean a heavier object always hits the ground faster?
-                         </div>
-                       </div>
-                       <div className="flex gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
-                         <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl shadow-lg shadow-blue/20">🤖</div>
-                         <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-3 text-sm shadow-md relative">
-                           <div className="absolute -left-1 top-3 w-3 h-3 bg-blue rotate-45"></div>
-                           That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                </div>
-
               </div>
+
+              {/* Card 4 */}
+              <div 
+                ref={el => { cardRefs.current[3] = el }}
+                data-index={3}
+                className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
+                style={{ zIndex: 40, transform: 'scale(1)' }}
+              >
+                <div className="w-full h-12 bg-white border-b border-border flex items-center px-4 gap-4 z-20 shrink-0">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="flex-1 bg-base border border-border rounded-md h-7 flex items-center px-3 justify-center text-xs text-text-muted font-medium">
+                    <span className="opacity-50">🔒</span> claivis.org/dashboard
+                  </div>
+                </div>
+                <div className="flex-1 p-6 relative overflow-hidden bg-base">
+                  <div className="h-full bg-white rounded-xl shadow-md border border-border flex flex-col p-4">
+                    <h4 className="font-bold text-text-main mb-4 border-b border-border pb-2">Live Session Transcript</h4>
+                    <div className="flex-1 space-y-4 overflow-hidden relative">
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl">🤖</div>
+                        <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-3 text-sm text-text-main">
+                          Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
+                        </div>
+                      </div>
+                      <div className="flex gap-3 flex-row-reverse animate-fade-up">
+                        <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-sm font-bold text-gold">S</div>
+                        <div className="flex-1 bg-gold/5 border border-gold/20 rounded-2xl rounded-tr-sm p-3 text-sm text-text-main">
+                          <span className="text-[10px] text-text-muted block mb-1">Student 🎤</span>
+                          Yes, does that mean a heavier object always hits the ground faster?
+                        </div>
+                      </div>
+                      <div className="flex gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
+                        <div className="w-8 h-8 rounded-full bg-blue/10 flex items-center justify-center text-xl shadow-lg shadow-blue/20">🤖</div>
+                        <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-3 text-sm shadow-md relative">
+                          <div className="absolute -left-1 top-3 w-3 h-3 bg-blue rotate-45"></div>
+                          That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -657,7 +720,7 @@ export default function Home() {
             <div className="reveal reveal-delay-2 bg-navy rounded-3xl p-8 md:p-10 shadow-2xl shadow-navy/50 relative overflow-hidden border border-white/10">
               <div className="absolute inset-0 bg-gradient-to-br from-blue/20 via-transparent to-accent/10" />
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue via-accent to-blue" />
-              
+
               <div className="flex items-center gap-4 mb-8 relative z-10">
                 <div className="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center text-accent text-2xl font-bold">✓</div>
                 <h3 className="font-extrabold text-white text-2xl" style={{ fontFamily: 'var(--font-display)' }}>With Claivis</h3>
