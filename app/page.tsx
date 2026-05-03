@@ -870,8 +870,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/40 text-sm font-medium">© {new Date().getFullYear()} Claivis Limited. All rights reserved.</p>
+          <div className="border-t border-white/10 pt-8 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-white/40 text-sm font-medium">
+              <p>© {new Date().getFullYear()} Claivis Limited. All rights reserved.</p>
+              <div className="hidden sm:block w-1 h-1 bg-white/20 rounded-full" />
+              <div className="flex gap-4 sm:gap-6">
+                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              </div>
+            </div>
             <div className="flex items-center gap-2 text-white/40 text-sm font-medium">
               Built in Nigeria, for Nigeria — and the world.<span className="text-accent">♥</span>
             </div>
