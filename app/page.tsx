@@ -56,11 +56,26 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setState('loading')
-    // Simulating API call for visual prototype
-    setTimeout(() => {
-      setState('success')
-      setMsg('You\'re on the list! We\'ll be in touch very soon.')
-    }, 1500)
+    setMsg('')
+    
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, school })
+      })
+      
+      if (res.ok) {
+        setState('success')
+        setMsg('You\'re on the list! We\'ll be in touch very soon.')
+      } else {
+        setState('error')
+        setMsg('Something went wrong. Please try again.')
+      }
+    } catch (error) {
+      setState('error')
+      setMsg('Failed to join waitlist. Please check your connection.')
+    }
   }
 
   const isFooter = variant === 'footer'
@@ -123,6 +138,7 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
           )}
         </button>
       </div>
+      {state === 'error' && <p className="text-red-400 text-sm font-medium">{msg}</p>}
       <p className={`text-xs ${isFooter ? 'text-white/30' : 'text-text-muted'}`}>No spam. No commitment. Just early access.</p>
     </form>
   )
