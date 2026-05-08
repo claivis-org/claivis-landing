@@ -220,7 +220,7 @@ function MockupContent({ step }: { step: number }) {
       <div className="flex-1 bg-gradient-to-br from-blue-mid to-navy flex flex-col items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30" />
         <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center animate-float z-10 relative">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🤖</div>
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-accent to-blue flex items-center justify-center text-3xl shadow-inner">🧑‍🏫</div>
           <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-50"></div>
         </div>
         <div className="absolute bottom-4 left-4 right-4 bg-navy/80 backdrop-blur-md rounded-lg p-3 border border-white/10">
@@ -246,7 +246,7 @@ function MockupContent({ step }: { step: number }) {
       <h4 className="font-bold text-text-main mb-3 sm:mb-4 border-b border-border pb-2 text-sm sm:text-base">Live Session Transcript</h4>
       <div className="flex-1 space-y-3 sm:space-y-4 overflow-hidden relative">
         <div className="flex gap-2 sm:gap-3">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue/10 flex items-center justify-center text-sm sm:text-xl">🤖</div>
+          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue/10 flex items-center justify-center text-sm sm:text-xl">🧑‍🏫</div>
           <div className="flex-1 bg-surface-alt rounded-2xl rounded-tl-sm p-2.5 sm:p-3 text-[11px] sm:text-sm text-text-main leading-relaxed">
             Force is equal to mass times acceleration. F = ma. Are there any questions on this formula?
           </div>
@@ -259,7 +259,7 @@ function MockupContent({ step }: { step: number }) {
           </div>
         </div>
         <div className="flex gap-2 sm:gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue/10 flex items-center justify-center text-sm sm:text-xl shadow-lg shadow-blue/20">🤖</div>
+          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue/10 flex items-center justify-center text-sm sm:text-xl shadow-lg shadow-blue/20">🧑‍🏫</div>
           <div className="flex-1 bg-blue text-white rounded-2xl rounded-tl-sm p-2.5 sm:p-3 text-[11px] sm:text-sm shadow-md relative leading-relaxed">
             <div className="absolute -left-1 top-2.5 sm:top-3 w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue rotate-45"></div>
             That's a great question! Actually, in a vacuum, all objects fall at the same rate regardless of mass due to gravity...
@@ -325,7 +325,7 @@ export default function Home() {
       desc: 'Students ask questions out loud. Claivis hears them, answers clearly in real time, and returns seamlessly to the lesson — just like a real teacher would.',
     },
     {
-      icon: '👁️',
+      icon: '🧑‍🏫',
       title: 'Visual AI Character',
       desc: 'A warm, human-feeling AI teacher appears on your classroom screen. Not a video. Not a chatbot. A live visual presence students can actually see and talk to.',
     },
