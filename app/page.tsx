@@ -57,14 +57,14 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
     e.preventDefault()
     setState('loading')
     setMsg('')
-    
+
     try {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, school })
       })
-      
+
       if (res.ok) {
         setState('success')
         setMsg('You\'re on the list! We\'ll be in touch very soon.')
@@ -282,7 +282,7 @@ export default function Home() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40)
-      
+
       // Calculate active step for desktop cards
       if (window.innerWidth >= 1024) {
         let currentStep = 0
@@ -298,11 +298,11 @@ export default function Home() {
         setActiveStep(currentStep)
       }
     }
-    
+
     window.addEventListener('scroll', onScroll, { passive: true })
     // Trigger once on mount
     onScroll()
-    
+
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -440,8 +440,18 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg shadow-blue/20">
-              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>C</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg shadow-blue/20 transition-transform duration-300 group-hover:scale-105 overflow-hidden relative">
+              <img
+                src="/logo.png"
+                alt="Claivis Logo"
+                className="w-7 h-7 object-contain mix-blend-screen"
+                style={{ filter: 'invert(1) grayscale(100%) contrast(1000%)' }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center gap-[1px]" style={{ transform: 'translate(-0.2px, -0.5px)' }}>
+                <div className="w-[1px] h-[3.5px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+                <div className="w-[1px] h-[6px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+                <div className="w-[1px] h-[3.5px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+              </div>
             </div>
             <span className="font-bold text-xl tracking-tight text-text-main" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
           </a>
@@ -597,17 +607,17 @@ export default function Home() {
             </h2>
           </div>
 
-          
+
           {/* Desktop Layout (Sticky Stacking Cards) */}
           <div className="hidden lg:flex flex-row gap-16 lg:gap-24 items-start relative pb-32">
             {/* Left side: Static Steps */}
             <div className="w-[45%] sticky top-32 space-y-10 relative z-10 shrink-0">
               {/* Timeline line */}
               <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-border hidden md:block" />
-              
+
               {howSteps.map((step, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={`flex items-start gap-6 relative transition-all duration-500 ease-out ${activeStep === i ? 'opacity-100 translate-x-2' : 'opacity-40'}`}
                 >
                   <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border-2 transition-all duration-500 ${activeStep >= i ? 'bg-blue text-white border-blue shadow-lg shadow-blue/20 scale-105' : 'bg-surface border-border text-text-muted'}`}>
@@ -626,14 +636,14 @@ export default function Home() {
             {/* Right side: Stacking Cards */}
             <div className="w-[55%] space-y-[40vh]">
               {[0, 1, 2, 3].map((stepIndex) => (
-                <div 
+                <div
                   key={stepIndex}
                   ref={el => { cardRefs.current[stepIndex] = el }}
                   data-index={stepIndex}
                   className="sticky top-32 h-[500px] md:h-[600px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col transition-transform duration-700 ease-out origin-top"
-                  style={{ 
-                    zIndex: (stepIndex + 1) * 10, 
-                    transform: activeStep > stepIndex ? `scale(${1 - (activeStep - stepIndex) * 0.04})` : 'scale(1)' 
+                  style={{
+                    zIndex: (stepIndex + 1) * 10,
+                    transform: activeStep > stepIndex ? `scale(${1 - (activeStep - stepIndex) * 0.04})` : 'scale(1)'
                   }}
                 >
                   <BrowserChrome />
@@ -661,7 +671,7 @@ export default function Home() {
                     <p className="text-text-muted leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
-                
+
                 {/* Mockup Card */}
                 <div className="h-[450px] sm:h-[500px] w-full bg-base rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col">
                   <BrowserChrome />
@@ -856,8 +866,18 @@ export default function Home() {
             {/* Brand */}
             <div className="md:col-span-2">
               <div className="flex items-center gap-2 mb-4 group">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>C</span>
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue to-accent flex items-center justify-center shadow-lg overflow-hidden relative">
+                  <img
+                    src="/logo.png"
+                    alt="Claivis Logo"
+                    className="w-7 h-7 object-contain mix-blend-screen"
+                    style={{ filter: 'invert(1) grayscale(100%) contrast(1000%)' }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center gap-[1px]" style={{ transform: 'translate(-0.2px, -0.5px)' }}>
+                    <div className="w-[1px] h-[3.5px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+                    <div className="w-[1px] h-[6px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+                    <div className="w-[1px] h-[3.5px] rounded-full" style={{ backgroundColor: '#ffffffff' }}></div>
+                  </div>
                 </div>
                 <span className="font-bold text-xl tracking-tight text-white" style={{ fontFamily: 'var(--font-display)' }}>Claivis</span>
               </div>
