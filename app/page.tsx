@@ -97,7 +97,7 @@ function WaitlistForm({ variant = 'hero' }: { variant?: 'hero' | 'inline' | 'foo
       <div className="flex flex-col md:flex-row gap-4">
         <input
           type="text"
-          placeholder="Your name"
+          placeholder="Your full name"
           value={name}
           onChange={e => setName(e.target.value)}
           className={`input-glow flex-1 rounded-xl px-4 py-3 text-sm transition-colors ${isFooter ? 'bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-white focus:bg-white/15' : 'bg-surface border border-border text-text-main placeholder-text-muted focus:border-blue'}`}
