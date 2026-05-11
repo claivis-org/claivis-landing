@@ -68,43 +68,29 @@ href="https://chat.whatsapp.com/AbCdEfGhIjKlMnOpQrStUv"
 ```
 
 ### 2. Connect your waitlist backend
-The waitlist form currently logs to console. Connect a real backend by editing `app/api/waitlist/route.ts`:
+The waitlist form already posts to `app/api/waitlist/route.ts`. Configure Airtable in `.env.local`:
 
-**Recommended: Loops.so** (free tier, Nigerian-friendly, clean interface)
-1. Sign up at [loops.so](https://loops.so)
-2. Create a mailing list called "Claivis Waitlist"
-3. Get your API key and List ID
-4. Add to `.env.local`:
-   ```
-   LOOPS_API_KEY=your_key
-   LOOPS_MAILING_LIST_ID=your_list_id
-   ```
-5. Uncomment the Loops section in `route.ts`
+```env
+AIRTABLE_API_KEY=your_key
+AIRTABLE_BASE_ID=appXXXXXXXXXXXXXX
+# Optional
+# AIRTABLE_TABLE_NAME=Waitlist
+# AIRTABLE_STATUS_FIELD_NAME=Status
+# AIRTABLE_DEFAULT_STATUS=New
+```
+
+Expected Airtable columns:
+- `Name`
+- `Email`
+- `School`
+
+Optional:
+- `Status` as a single select. If you set `AIRTABLE_DEFAULT_STATUS`, make sure that option already exists in Airtable or the API will retry without it.
 
 **Alternative: Mailchimp, ConvertKit, or Supabase** — all have code ready in `route.ts`, just uncomment.
 
-### 3. Update the waitlist form to call the API
-In `app/page.tsx`, update the `handleSubmit` function to call your API:
-
-```tsx
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setState('loading')
-  const res = await fetch('/api/waitlist', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, school }),
-  })
-  const data = await res.json()
-  if (data.success) {
-    setState('success')
-    setMsg(data.message)
-  } else {
-    setState('error')
-    setMsg(data.error || 'Something went wrong.')
-  }
-}
-```
+### 3. Verify the waitlist form
+Submit the form locally and confirm a record appears in Airtable. If you do not provide Airtable credentials, the API returns a simulated success response for development.
 
 ### 4. Add your phone number
 Search for `[Phone number]` in `app/page.tsx` and replace with your actual number.
