@@ -466,7 +466,7 @@ export default function Home() {
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://chat.whatsapp.com/YOUR_GROUP_LINK"
+              href="https://whatsapp.com/channel/0029VbCm79S0bIdwd6zTUF0B"
               target="_blank"
               rel="noopener noreferrer"
               className="text-text-muted hover:text-[#25D366] transition-colors"
@@ -492,7 +492,7 @@ export default function Home() {
               <a key={label} href={href} onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-text-muted hover:text-blue py-2">{label}</a>
             ))}
             <div className="pt-4 border-t border-border space-y-3">
-              <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" target="_blank" rel="noopener noreferrer" className="wa-btn flex items-center justify-center gap-2 text-white text-sm font-medium px-4 py-3 rounded-xl w-full">
+              <a href="https://whatsapp.com/channel/0029VbCm79S0bIdwd6zTUF0B" target="_blank" rel="noopener noreferrer" className="wa-btn flex items-center justify-center gap-2 text-white text-sm font-medium px-4 py-3 rounded-xl w-full">
                 <WhatsAppIcon /> Join WhatsApp Community
               </a>
               <a href="#waitlist" onClick={() => setMobileOpen(false)} className="btn-primary block text-center bg-blue text-white font-semibold text-sm px-5 py-3 rounded-xl w-full">
