@@ -21,19 +21,40 @@ export async function POST(request: Request) {
     }
 
     const base = new Airtable({ apiKey }).base(baseId);
+    const tableName = process.env.AIRTABLE_TABLE_NAME || 'Waitlist';
+    const statusFieldName = process.env.AIRTABLE_STATUS_FIELD_NAME || 'Status';
+    const defaultStatus = process.env.AIRTABLE_DEFAULT_STATUS;
 
-    // Create a new record in the 'Waitlist' table
-    // Important: The table name must be 'Waitlist' and the column names must match exactly!
-    await base('Waitlist').create([
-      {
-        fields: {
-          'Name': name || '',
-          'Email': email,
-          'School': school || '',
-          'Status': 'New'
-        }
+    const fields: Record<string, string> = {
+      Name: name || '',
+      Email: email,
+      School: school || '',
+    };
+
+    if (defaultStatus) {
+      fields[statusFieldName] = defaultStatus;
+    }
+
+    // Column names must match the Airtable base exactly.
+    try {
+      await base(tableName).create([{ fields }]);
+    } catch (error: unknown) {
+      const airtableError = error as { error?: string };
+      const shouldRetryWithoutStatus =
+        Boolean(defaultStatus) &&
+        airtableError?.error === 'INVALID_MULTIPLE_CHOICE_OPTIONS';
+
+      if (!shouldRetryWithoutStatus) {
+        throw error;
       }
-    ]);
+
+      console.warn(
+        `Airtable rejected ${statusFieldName}=\"${defaultStatus}\". Retrying without the status field.`
+      );
+
+      delete fields[statusFieldName];
+      await base(tableName).create([{ fields }]);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
