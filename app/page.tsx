@@ -47,7 +47,7 @@ export default function Home() {
             Pilot waitlist
           </div>
 
-          <h1 className="max-w-md font-display text-[1.65rem] font-bold leading-[0.95] tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-5xl xl:text-6xl">
+          <h1 className="max-w-md font-display text-[1.85rem] font-bold leading-[0.95] tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-5xl xl:text-6xl">
             Keep lessons moving when teachers are unavailable.
           </h1>
 
