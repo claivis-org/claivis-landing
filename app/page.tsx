@@ -43,36 +43,36 @@ export default function Home() {
 
       <section className="relative z-10 min-h-[100svh] px-4 py-4 sm:px-6 md:px-10">
         <div className="absolute left-4 right-4 top-4 max-w-[22rem] text-left sm:left-8 sm:right-auto sm:top-8 md:max-w-[28rem] lg:left-10 lg:top-10 xl:left-14">
-          <div className="mb-2 w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-white/80 shadow-lg backdrop-blur-md sm:text-[10px]">
+          <div className="mb-1.5 w-fit rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/80 shadow-lg backdrop-blur-md sm:mb-2 sm:px-3 sm:py-1.5 sm:text-[10px]">
             Pilot waitlist
           </div>
 
-          <h1 className="max-w-md font-display text-[1.85rem] font-bold leading-[0.95] tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-5xl xl:text-6xl">
+          <h1 className="max-w-md font-display text-[1.65rem] font-bold leading-[0.95] tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-5xl xl:text-6xl">
             Keep lessons moving when teachers are unavailable.
           </h1>
 
-          <p className="mt-2 max-w-sm text-xs font-medium leading-relaxed text-white/80 drop-shadow sm:mt-4 sm:text-base">
+          <p className="mt-1.5 max-w-sm text-xs font-medium leading-normal text-white/80 drop-shadow sm:mt-3 sm:text-base sm:leading-relaxed">
             Early access for schools testing live AI teaching, classroom Q&A, and lesson reports.
           </p>
 
-          <div className="mt-4 flex items-center gap-3 text-white/90 drop-shadow sm:mt-6">
-            <div className="flex -space-x-2.5">
+          <div className="mt-2 flex items-center gap-2 text-white/90 drop-shadow sm:mt-4 sm:gap-2.5">
+            <div className="flex -space-x-2">
               {waitlistPrincipals.map((principal, index) => (
                 <span
                   key={principal}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/80 text-[10px] font-bold text-white shadow-md"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-white/80 text-[8px] font-bold text-white shadow-sm sm:h-7 sm:w-7 sm:border-2 sm:text-[9px]"
                   style={{
                     background:
                       index === waitlistPrincipals.length - 1
-                        ? "rgba(255,255,255,0.25)"
-                        : `hsl(${210 + index * 17} 72% 38%)`,
+                        ? "hsl(215 65% 25%)"
+                        : `hsl(${210 + index * 18} 75% 40%)`,
                   }}
                 >
                   {principal}
                 </span>
               ))}
             </div>
-            <p className="text-xs font-semibold text-white/90 sm:text-sm">
+            <p className="text-[11px] font-semibold text-white/90 sm:text-xs">
               Principals already on the waitlist
             </p>
           </div>
