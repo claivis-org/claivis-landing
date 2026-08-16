@@ -54,6 +54,28 @@ export default function Home() {
           <p className="mt-2 max-w-sm text-xs font-medium leading-relaxed text-white/80 drop-shadow sm:mt-4 sm:text-base">
             Early access for schools testing live AI teaching, classroom Q&A, and lesson reports.
           </p>
+
+          <div className="mt-4 flex items-center gap-3 text-white/90 drop-shadow sm:mt-6">
+            <div className="flex -space-x-2.5">
+              {waitlistPrincipals.map((principal, index) => (
+                <span
+                  key={principal}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/80 text-[10px] font-bold text-white shadow-md"
+                  style={{
+                    background:
+                      index === waitlistPrincipals.length - 1
+                        ? "rgba(255,255,255,0.25)"
+                        : `hsl(${210 + index * 17} 72% 38%)`,
+                  }}
+                >
+                  {principal}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs font-semibold text-white/90 sm:text-sm">
+              Principals already on the waitlist
+            </p>
+          </div>
         </div>
 
         <div className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[min(26rem,calc(100vw-3rem))] lg:bottom-10 lg:right-10">
@@ -65,28 +87,6 @@ export default function Home() {
             <div className="mt-4">
               <WaitlistSignupForm />
             </div>
-          </div>
-
-          <div className="mt-3 hidden items-center gap-3 rounded-full border border-white/14 bg-white/[0.06] px-4 py-3 text-white/82 shadow-xl backdrop-blur-md sm:flex">
-            <div className="flex -space-x-3">
-              {waitlistPrincipals.map((principal, index) => (
-                <span
-                  key={principal}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/75 text-[10px] font-bold text-white shadow-sm"
-                  style={{
-                    background:
-                      index === waitlistPrincipals.length - 1
-                        ? "rgba(255,255,255,0.16)"
-                        : `hsl(${210 + index * 17} 72% 38%)`,
-                  }}
-                >
-                  {principal}
-                </span>
-              ))}
-            </div>
-            <p className="text-xs font-semibold sm:text-sm">
-              Principals already on the waitlist
-            </p>
           </div>
         </div>
       </section>
