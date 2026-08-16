@@ -44,7 +44,7 @@ export default function Home() {
       <section className="relative z-10 min-h-[100svh] px-4 py-4 sm:px-6 md:px-10">
         <div className="absolute left-4 right-4 top-4 max-w-[22rem] text-left sm:left-8 sm:right-auto sm:top-8 md:max-w-[28rem] lg:left-10 lg:top-10 xl:left-14">
           <div className="mb-1.5 w-fit rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/80 shadow-lg backdrop-blur-md sm:mb-2 sm:px-3 sm:py-1.5 sm:text-[10px]">
-            Pilot waitlist
+            Early Access
           </div>
 
           <h1 className="max-w-md font-display text-[1.85rem] font-bold leading-[0.95] tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-5xl xl:text-6xl">
