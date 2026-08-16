@@ -52,7 +52,7 @@ export default function Home() {
           </h1>
 
           <p className="mt-1.5 max-w-sm text-xs font-medium leading-normal text-white/80 drop-shadow sm:mt-3 sm:text-base sm:leading-relaxed">
-            Early access for schools testing live AI teaching, classroom Q&A, and lesson reports.
+            Live AI teaching, classroom Q&A, and lesson reports, built for schools facing the teacher shortage.
           </p>
 
           <div className="mt-2 flex items-center gap-2 text-white/90 drop-shadow sm:mt-4 sm:gap-2.5">
