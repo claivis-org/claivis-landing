@@ -1,64 +1,129 @@
-import { NextResponse } from 'next/server';
-import Airtable from 'airtable';
+import { NextResponse } from "next/server";
+import Airtable from "airtable";
+
+export const runtime = "nodejs";
+
+type WaitlistRequestBody = {
+  full_name?: unknown;
+  name?: unknown;
+  email?: unknown;
+  school_name?: unknown;
+  school?: unknown;
+  phone?: unknown;
+};
+
+function cleanString(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validationError(details: Record<string, string>) {
+  return NextResponse.json(
+    {
+      error: {
+        code: "invalid_request",
+        message: "Please complete the required waitlist fields.",
+        details,
+      },
+    },
+    { status: 400 },
+  );
+}
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, school } = body;
+    const body = (await request.json()) as WaitlistRequestBody;
+    const fullName = cleanString(body.full_name || body.name);
+    const schoolName = cleanString(body.school_name || body.school);
+    const email = cleanString(body.email).toLowerCase();
+    const phone = cleanString(body.phone);
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    const errors: Record<string, string> = {};
+
+    if (!fullName) {
+      errors.full_name = "required";
     }
 
-    // Initialize Airtable only if credentials exist
+    if (!schoolName) {
+      errors.school_name = "required";
+    }
+
+    if (!email) {
+      errors.email = "required";
+    } else if (!isValidEmail(email)) {
+      errors.email = "invalid";
+    }
+
+    if (!phone) {
+      errors.phone = "required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return validationError(errors);
+    }
+
     const apiKey = process.env.AIRTABLE_API_KEY;
     const baseId = process.env.AIRTABLE_BASE_ID;
 
     if (!apiKey || !baseId) {
-      console.warn("Airtable credentials are not set. Simulating a successful request for development.");
-      // If no credentials, simulate success so the frontend still works during testing
-      return NextResponse.json({ success: true, message: 'Simulated success (no Airtable credentials found)' });
+      console.warn("Airtable credentials are not set. Simulating waitlist success.");
+      return NextResponse.json({ success: true, mode: "local" });
     }
 
     const base = new Airtable({ apiKey }).base(baseId);
-    const tableName = process.env.AIRTABLE_TABLE_NAME || 'Waitlist';
-    const statusFieldName = process.env.AIRTABLE_STATUS_FIELD_NAME || 'Status';
+    const tableName = process.env.AIRTABLE_TABLE_NAME || "Waitlist";
+    const nameFieldName = process.env.AIRTABLE_NAME_FIELD_NAME || "Name";
+    const emailFieldName = process.env.AIRTABLE_EMAIL_FIELD_NAME || "Email";
+    const schoolFieldName = process.env.AIRTABLE_SCHOOL_FIELD_NAME || "School";
+    const phoneFieldName = process.env.AIRTABLE_PHONE_FIELD_NAME || "Phone";
+    const statusFieldName = process.env.AIRTABLE_STATUS_FIELD_NAME || "Status";
     const defaultStatus = process.env.AIRTABLE_DEFAULT_STATUS;
 
     const fields: Record<string, string> = {
-      Name: name || '',
-      Email: email,
-      School: school || '',
+      [nameFieldName]: fullName,
+      [emailFieldName]: email,
+      [schoolFieldName]: schoolName,
+      [phoneFieldName]: phone,
     };
 
     if (defaultStatus) {
       fields[statusFieldName] = defaultStatus;
     }
 
-    // Column names must match the Airtable base exactly.
     try {
       await base(tableName).create([{ fields }]);
     } catch (error: unknown) {
       const airtableError = error as { error?: string };
       const shouldRetryWithoutStatus =
-        Boolean(defaultStatus) &&
-        airtableError?.error === 'INVALID_MULTIPLE_CHOICE_OPTIONS';
+        Boolean(defaultStatus) && airtableError?.error === "INVALID_MULTIPLE_CHOICE_OPTIONS";
 
       if (!shouldRetryWithoutStatus) {
         throw error;
       }
 
       console.warn(
-        `Airtable rejected ${statusFieldName}=\"${defaultStatus}\". Retrying without the status field.`
+        `Airtable rejected ${statusFieldName}="${defaultStatus}". Retrying without the status field.`,
       );
 
       delete fields[statusFieldName];
       await base(tableName).create([{ fields }]);
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, mode: "airtable" });
   } catch (error) {
-    console.error('Error saving to Airtable:', error);
-    return NextResponse.json({ error: 'Failed to save to waitlist' }, { status: 500 });
+    console.error("Error saving waitlist request:", error);
+
+    return NextResponse.json(
+      {
+        error: {
+          code: "waitlist_submit_failed",
+          message: "We could not save your waitlist request. Please try again.",
+        },
+      },
+      { status: 500 },
+    );
   }
 }
