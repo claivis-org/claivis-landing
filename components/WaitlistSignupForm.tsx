@@ -31,8 +31,8 @@ const initialForm: WaitlistFormState = {
 const fields: WaitlistField[] = [
   {
     key: "full_name",
-    label: "Preferred name",
-    placeholder: "Principal Ade",
+    label: "Your name",
+    placeholder: "Ade Kunle",
     autoComplete: "name",
     type: "text",
     icon: "user",
@@ -57,7 +57,7 @@ const fields: WaitlistField[] = [
   {
     key: "phone",
     label: "Phone number",
-    placeholder: "+234...",
+    placeholder: "070...",
     autoComplete: "tel",
     inputMode: "tel",
     type: "tel",
