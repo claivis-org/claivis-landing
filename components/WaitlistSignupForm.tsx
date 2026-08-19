@@ -130,6 +130,22 @@ function getErrorMessage(error: unknown) {
   return "Something went wrong. Please try again.";
 }
 
+function isValidName(name: string) {
+  // Allow letters, spaces, hyphens, and apostrophes (min 2 chars)
+  return /^[a-zA-Z\s'-]{2,60}$/.test(name.trim());
+}
+
+function isValidSchoolName(school: string) {
+  // School names can contain letters, numbers (e.g. Model College 1), spaces, dots, dashes, and &
+  const cleaned = school.trim();
+  return cleaned.length >= 2 && cleaned.length <= 100;
+}
+
+function isValidEmail(email: string) {
+  // Standard strict RFC 5322 regex for valid emails
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim());
+}
+
 function isValidPhone(phone: string) {
   // Allow optional leading +, digits, spaces, dashes, min 7 digits
   const cleaned = phone.replace(/[^0-9]/g, "");
@@ -137,15 +153,25 @@ function isValidPhone(phone: string) {
 }
 
 function getFieldError(field: WaitlistField, value: string) {
-  if (!value.trim()) {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
     return `${field.label} is required.`;
   }
 
-  if (field.key === "email" && !isValidEmail(value.trim())) {
-    return "Please enter a valid school email.";
+  if (field.key === "full_name" && !isValidName(trimmed)) {
+    return "Please enter a valid name (letters only).";
   }
 
-  if (field.key === "phone" && !isValidPhone(value.trim())) {
+  if (field.key === "school_name" && !isValidSchoolName(trimmed)) {
+    return "Please enter a valid school name.";
+  }
+
+  if (field.key === "email" && !isValidEmail(trimmed)) {
+    return "Please enter a valid email address (e.g. principal@school.com).";
+  }
+
+  if (field.key === "phone" && !isValidPhone(trimmed)) {
     return "Please enter a valid phone number.";
   }
 
@@ -167,15 +193,21 @@ export function WaitlistSignupForm() {
         form.email.trim() &&
         form.school_name.trim() &&
         form.phone.trim() &&
-        isValidEmail(form.email.trim()) &&
-        isValidPhone(form.phone.trim()) &&
+        isValidName(form.full_name) &&
+        isValidSchoolName(form.school_name) &&
+        isValidEmail(form.email) &&
+        isValidPhone(form.phone) &&
         status !== "submitting",
     );
   }, [form, status]);
 
   function updateField(field: keyof WaitlistFormState, value: string) {
     let sanitizedValue = value;
-    if (field === "phone") {
+
+    if (field === "full_name") {
+      // Disallow numbers and special characters in person name (allow letters, spaces, hyphens, apostrophes)
+      sanitizedValue = value.replace(/[^a-zA-Z\s'-]/g, "");
+    } else if (field === "phone") {
       // Allow only numbers, +, space, and dashes
       sanitizedValue = value.replace(/[^0-9+\s-]/g, "");
     }
