@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Airtable from "airtable";
+import { Resend } from "resend";
+import { getWaitlistEmailHtml } from "./emailTemplate";
 
 export const runtime = "nodejs";
 
@@ -110,6 +112,28 @@ export async function POST(request: Request) {
 
       delete fields[statusFieldName];
       await base(tableName).create([{ fields }]);
+    }
+
+    // Send Welcome Email via Resend if API key is configured
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const fromEmail =
+      process.env.RESEND_FROM_EMAIL || "Wisdom from Claivis <welcome@mail.useclaivis.com>";
+
+    if (resendApiKey) {
+      try {
+        const resend = new Resend(resendApiKey);
+        await resend.emails.send({
+          from: fromEmail,
+          to: [email],
+          subject: "Welcome to the Claivis Waitlist!",
+          html: getWaitlistEmailHtml({ fullName, schoolName }),
+        });
+      } catch (emailErr) {
+        console.error("Failed to send welcome email via Resend:", emailErr);
+        // We catch email errors so the waitlist submission itself does not fail for the user
+      }
+    } else {
+      console.warn("RESEND_API_KEY is not set. Skipping welcome email delivery.");
     }
 
     return NextResponse.json({ success: true, mode: "airtable" });
