@@ -23,8 +23,8 @@ export function getWaitlistEmailHtml({
           
           <!-- Header Bar -->
           <tr>
-            <td style="background-color:#0f172a; padding:24px 32px; text-align:left;">
-              <span style="font-size:22px; font-weight:700; color:#ffffff; tracking-tight: -0.02em;">Claivis</span>
+            <td style="background-color:#1A4A8A; padding:28px 32px; text-align:left;">
+              <span style="font-size:24px; font-weight:800; color:#ffffff; letter-spacing:-0.03em; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Claivis</span>
             </td>
           </tr>
 
@@ -48,7 +48,7 @@ export function getWaitlistEmailHtml({
               </p>
 
               <!-- Highlight Callout Box -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f8fafc; border-left:4px solid #2563eb; border-radius:4px; margin:24px 0;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f0f4f9; border-left:4px solid #1A4A8A; border-radius:4px; margin:24px 0;">
                 <tr>
                   <td style="padding:16px; font-size:14px; color:#1e293b;">
                     <strong>What happens next?</strong><br/>
