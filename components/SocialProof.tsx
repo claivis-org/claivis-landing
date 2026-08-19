@@ -6,8 +6,8 @@ import { getInitials } from "@/app/utils/getInitials";
 const defaultInitials = ["PA", "MO", "AK", "IG"];
 
 export function SocialProof() {
-  const [initials, setInitials] = useState<string[]>(defaultInitials);
-  const [totalCount, setTotalCount] = useState<number>(22);
+  const [initials, setInitials] = useState<string[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchStats() {
@@ -36,6 +36,7 @@ export function SocialProof() {
     fetchStats();
   }, []);
 
+  // Real Airtable count only - zero artificial offsets
   const extraCount = Math.max(totalCount - initials.length, 0);
 
   return (
@@ -53,14 +54,16 @@ export function SocialProof() {
           </span>
         ))}
 
-        <span
-          className="flex h-6 w-6 items-center justify-center rounded-full border border-white/80 text-[8px] font-bold text-white shadow-sm sm:h-7 sm:w-7 sm:border-2 sm:text-[9px]"
-          style={{
-            background: "hsl(215 65% 25%)",
-          }}
-        >
-          +{extraCount}
-        </span>
+        {extraCount > 0 ? (
+          <span
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-white/80 text-[8px] font-bold text-white shadow-sm sm:h-7 sm:w-7 sm:border-2 sm:text-[9px]"
+            style={{
+              background: "hsl(215 65% 25%)",
+            }}
+          >
+            +{extraCount}
+          </span>
+        ) : null}
       </div>
 
       <p className="text-[11px] font-semibold text-white/90 sm:text-xs">
