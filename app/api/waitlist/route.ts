@@ -151,3 +151,55 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET() {
+  const defaultFallback = {
+    count: 22,
+    recentNames: ["Principal Ade", "Mrs. Okon", "Ade Kunle", "Ibrahim Garba"],
+  };
+
+  try {
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    const baseId = process.env.AIRTABLE_BASE_ID;
+
+    if (!apiKey || !baseId) {
+      return NextResponse.json(defaultFallback);
+    }
+
+    const base = new Airtable({ apiKey }).base(baseId);
+    const tableName = process.env.AIRTABLE_TABLE_NAME || "Waitlist";
+    const nameFieldName = process.env.AIRTABLE_NAME_FIELD_NAME || "Name";
+
+    // Fetch latest records from Airtable
+    const records = await base(tableName)
+      .select({
+        maxRecords: 100,
+        fields: [nameFieldName],
+      })
+      .all();
+
+    const count = records.length > 0 ? records.length : defaultFallback.count;
+    const recentNames: string[] = [];
+
+    // Get up to 4 most recent names
+    for (let i = records.length - 1; i >= 0 && recentNames.length < 4; i--) {
+      const val = records[i].get(nameFieldName);
+      if (typeof val === "string" && val.trim()) {
+        recentNames.push(val.trim());
+      }
+    }
+
+    // Fill with default names if less than 4 exist in Airtable yet
+    while (recentNames.length < 4) {
+      recentNames.push(defaultFallback.recentNames[recentNames.length]);
+    }
+
+    return NextResponse.json({
+      count,
+      recentNames,
+    });
+  } catch (error) {
+    console.error("Error fetching waitlist stats from Airtable:", error);
+    return NextResponse.json(defaultFallback);
+  }
+}
