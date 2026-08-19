@@ -224,7 +224,7 @@ export function WaitlistSignupForm() {
       }
 
       setStatus("success");
-      setNotice("You are on the Claivis pilot waitlist. We will reach out with next steps.");
+      setNotice("You are on the Claivis waitlist. We will reach out with next steps.");
       setForm(initialForm);
       setStep(0);
     } catch (error) {
