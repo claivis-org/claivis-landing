@@ -154,8 +154,8 @@ export async function POST(request: Request) {
 
 export async function GET() {
   const defaultFallback = {
-    count: 22,
-    recentNames: ["Principal Ade", "Mrs. Okon", "Ade Kunle", "Ibrahim Garba"],
+    count: 0,
+    recentNames: [] as string[],
   };
 
   try {
