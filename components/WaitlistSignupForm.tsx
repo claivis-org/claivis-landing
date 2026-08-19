@@ -160,7 +160,7 @@ function getFieldError(field: WaitlistField, value: string) {
   }
 
   if (field.key === "full_name" && !isValidName(trimmed)) {
-    return "Please enter a valid name (letters only).";
+    return "Please enter a valid name.";
   }
 
   if (field.key === "school_name" && !isValidSchoolName(trimmed)) {
@@ -168,7 +168,7 @@ function getFieldError(field: WaitlistField, value: string) {
   }
 
   if (field.key === "email" && !isValidEmail(trimmed)) {
-    return "Please enter a valid email address (e.g. principal@school.com).";
+    return "Please enter a valid email address.";
   }
 
   if (field.key === "phone" && !isValidPhone(trimmed)) {
