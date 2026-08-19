@@ -130,8 +130,10 @@ function getErrorMessage(error: unknown) {
   return "Something went wrong. Please try again.";
 }
 
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function isValidPhone(phone: string) {
+  // Allow optional leading +, digits, spaces, dashes, min 7 digits
+  const cleaned = phone.replace(/[^0-9]/g, "");
+  return cleaned.length >= 7 && cleaned.length <= 15;
 }
 
 function getFieldError(field: WaitlistField, value: string) {
@@ -141,6 +143,10 @@ function getFieldError(field: WaitlistField, value: string) {
 
   if (field.key === "email" && !isValidEmail(value.trim())) {
     return "Please enter a valid school email.";
+  }
+
+  if (field.key === "phone" && !isValidPhone(value.trim())) {
+    return "Please enter a valid phone number.";
   }
 
   return "";
@@ -162,12 +168,19 @@ export function WaitlistSignupForm() {
         form.school_name.trim() &&
         form.phone.trim() &&
         isValidEmail(form.email.trim()) &&
+        isValidPhone(form.phone.trim()) &&
         status !== "submitting",
     );
   }, [form, status]);
 
   function updateField(field: keyof WaitlistFormState, value: string) {
-    setForm((current) => ({ ...current, [field]: value }));
+    let sanitizedValue = value;
+    if (field === "phone") {
+      // Allow only numbers, +, space, and dashes
+      sanitizedValue = value.replace(/[^0-9+\s-]/g, "");
+    }
+
+    setForm((current) => ({ ...current, [field]: sanitizedValue }));
     if (status === "error") {
       setStatus("idle");
       setNotice("");
