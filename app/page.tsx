@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { WaitlistSignupForm } from "@/components/WaitlistSignupForm";
+import { SocialProof } from "@/components/SocialProof";
 
 export const metadata: Metadata = {
   title: "Join the Claivis Pilot Waitlist",
   description:
     "Join the first schools testing Claivis for live AI teaching, classroom Q&A, curriculum upload, and lesson reports.",
 };
-
-const waitlistPrincipals = ["PA", "MO", "AO", "IG", "+18"];
 
 export default function Home() {
   return (
@@ -55,27 +54,7 @@ export default function Home() {
             Live AI teaching, classroom Q&A, and lesson reports, built for schools facing the teacher shortage.
           </p>
 
-          <div className="mt-2 flex items-center gap-2 text-white/90 drop-shadow sm:mt-4 sm:gap-2.5">
-            <div className="flex -space-x-2">
-              {waitlistPrincipals.map((principal, index) => (
-                <span
-                  key={principal}
-                  className="flex h-6 w-6 items-center justify-center rounded-full border border-white/80 text-[8px] font-bold text-white shadow-sm sm:h-7 sm:w-7 sm:border-2 sm:text-[9px]"
-                  style={{
-                    background:
-                      index === waitlistPrincipals.length - 1
-                        ? "hsl(215 65% 25%)"
-                        : `hsl(${210 + index * 18} 75% 40%)`,
-                  }}
-                >
-                  {principal}
-                </span>
-              ))}
-            </div>
-            <p className="text-[11px] font-semibold text-white/90 sm:text-xs">
-              Principals already on the waitlist
-            </p>
-          </div>
+          <SocialProof />
         </div>
 
         <div className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[min(26rem,calc(100vw-3rem))] lg:bottom-10 lg:right-10">
