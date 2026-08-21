@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Claivis — AI Teaching Infrastructure for Schools',
     description: 'The first AI teaching agent built for Nigerian secondary schools. No teacher? No problem.',
-    url: 'https://claivis.org',
+    url: 'https://useclaivis.com',
     siteName: 'Claivis',
     type: 'website',
   },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'Claivis — AI Teaching Infrastructure for Schools',
     description: 'No teacher? No problem. Claivis shows up.',
   },
-  metadataBase: new URL('https://claivis.org'),
+  metadataBase: new URL('https://useclaivis.com'),
 }
 
 export default function RootLayout({
