@@ -97,87 +97,81 @@ export function getWaitlistEmailHtml({
             </td>
           </tr>
 
-          <!-- Realistic SalesforceIQ Open Envelope with Waves, Curves, Shaded Interior & Emerging Brand Emblem -->
+          <!-- Dimensional Open Physical Envelope (Precise Multi-Layered Structure) -->
           <tr>
             <td style="padding: 0; margin: 0; background-color: #ffffff;">
-              <svg width="100%" height="280" viewBox="0 0 580 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block; width: 100%;">
+              <svg width="100%" height="275" viewBox="0 0 580 275" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block; width: 100%;">
                 <defs>
-                  <!-- Interior Soft Glowing Gradient -->
-                  <linearGradient id="sfInteriorGrad" x1="290" y1="20" x2="290" y2="200" gradientUnits="userSpaceOnUse">
+                  <!-- 1. Light Interior Gradient (Near-white to pale blue) -->
+                  <linearGradient id="backFlapInterior" x1="290" y1="20" x2="290" y2="210" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="35%" stop-color="#f0f9ff"/>
-                    <stop offset="75%" stop-color="#e0f2fe"/>
-                    <stop offset="100%" stop-color="#bae6fd"/>
+                    <stop offset="40%" stop-color="#f0f9ff"/>
+                    <stop offset="85%" stop-color="#e0f2fe"/>
+                    <stop offset="100%" stop-color="#d0ebfd"/>
                   </linearGradient>
 
-                  <!-- Large Hero Ring Gradient (Matching SalesforceIQ Bright Cyan to Azure) -->
-                  <linearGradient id="sfHeroRing" x1="160" y1="40" x2="420" y2="240" gradientUnits="userSpaceOnUse">
+                  <!-- 2. Centerpiece Brand Ring Gradient (Navy #1A4A8A to Cyan #00D4FF) -->
+                  <linearGradient id="brandRingGradient" x1="170" y1="30" x2="410" y2="220" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stop-color="#00D4FF"/>
-                    <stop offset="45%" stop-color="#0284C7"/>
-                    <stop offset="100%" stop-color="#0369A1"/>
+                    <stop offset="50%" stop-color="#0284C7"/>
+                    <stop offset="100%" stop-color="#1A4A8A"/>
                   </linearGradient>
 
-                  <!-- Front Lip Drop Shadow (Soft, Deep, Diffused) -->
-                  <filter id="sfLipShadow" x="-20" y="80" width="620" height="180" filterUnits="userSpaceOnUse">
-                    <feDropShadow dx="0" dy="-8" stdDeviation="12" flood-color="#0369a1" flood-opacity="0.15"/>
-                    <feDropShadow dx="0" dy="-2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+                  <!-- 3. Soft Diffused Front Lip Drop Shadow -->
+                  <filter id="frontLipShadow" x="-20%" y="-40%" width="140%" height="160%" filterUnits="userSpaceOnUse">
+                    <feDropShadow dx="0" dy="-7" stdDeviation="12" flood-color="#1A4A8A" flood-opacity="0.15"/>
+                    <feDropShadow dx="0" dy="-2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/>
                   </filter>
-
-                  <!-- Subtle Network Lines Gradient -->
-                  <linearGradient id="sfNetGrad" x1="0" y1="50" x2="580" y2="180" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#0284c7" stop-opacity="0.08"/>
-                    <stop offset="50%" stop-color="#00d4ff" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.08"/>
-                  </linearGradient>
                 </defs>
 
-                <!-- 1. OPEN ENVELOPE BACK FLAP & INTERIOR POCKET -->
-                <!-- Top edge slants up with smooth organic perspective from left (0, 100) to top peak (290, 25) to right (580, 100) -->
-                <path d="M 0 100 
-                         Q 140 50, 290 25 
-                         Q 440 50, 580 100 
-                         L 580 200 
-                         L 0 200 
+                <!-- LAYER 1: BACK FLAP (Furthest back layer - single smooth organic curve) -->
+                <path d="M 0 95 
+                         C 120 50, 200 24, 290 22 
+                         C 380 24, 460 50, 580 95 
+                         L 580 220 
+                         L 0 220 
                          Z" 
-                      fill="url(#sfInteriorGrad)"/>
+                      fill="url(#backFlapInterior)"/>
 
-                <!-- Top Back Flap Rim / Shadow -->
-                <path d="M 0 100 Q 140 50, 290 25 Q 440 50, 580 100" 
+                <!-- Back Flap Soft Rim Highlight -->
+                <path d="M 0 95 C 120 50, 200 24, 290 22 C 380 24, 460 50, 580 95" 
                       stroke="#e2e8f0" 
-                      stroke-width="1.5" 
+                      stroke-width="1.2" 
                       fill="none"/>
 
-                <!-- 2. NETWORK CONSTELLATION MESH (Soft, Techy & Thematic Inside Envelope) -->
-                <g stroke="url(#sfNetGrad)" stroke-width="1.2">
-                  <line x1="50" y1="95" x2="160" y2="55"/>
-                  <line x1="160" y1="55" x2="290" y2="35"/>
-                  <line x1="290" y1="35" x2="420" y2="55"/>
-                  <line x1="420" y1="55" x2="530" y2="95"/>
-                  
-                  <line x1="160" y1="55" x2="230" y2="110"/>
-                  <line x1="420" y1="55" x2="350" y2="110"/>
-                  <line x1="290" y1="35" x2="290" y2="95"/>
-                  <line x1="230" y1="110" x2="350" y2="110"/>
+                <!-- LAYER 2: BACKGROUND MESH TEXTURE (Faint ambient constellation, non-converging, opacity <= 0.16) -->
+                <g stroke="#0284c7" stroke-width="1" opacity="0.15" stroke-linecap="round">
+                  <line x1="60" y1="85" x2="140" y2="60"/>
+                  <line x1="140" y1="60" x2="220" y2="75"/>
+                  <line x1="220" y1="75" x2="310" y2="45"/>
+                  <line x1="360" y1="55" x2="440" y2="40"/>
+                  <line x1="440" y1="40" x2="520" y2="75"/>
+                  <line x1="140" y1="60" x2="180" y2="105"/>
+                  <line x1="440" y1="40" x2="400" y2="95"/>
+                  <line x1="260" y1="100" x2="330" y2="95"/>
 
-                  <circle cx="160" cy="55" r="3.5" fill="#38bdf8" opacity="0.75"/>
-                  <circle cx="290" cy="35" r="4.5" fill="#00d4ff" opacity="0.9"/>
-                  <circle cx="420" cy="55" r="3.5" fill="#38bdf8" opacity="0.75"/>
-                  <circle cx="230" cy="110" r="3" fill="#0284c7" opacity="0.6"/>
-                  <circle cx="350" cy="110" r="3" fill="#0284c7" opacity="0.6"/>
+                  <circle cx="60" cy="85" r="2.5" fill="#0284c7"/>
+                  <circle cx="140" cy="60" r="3" fill="#00D4FF"/>
+                  <circle cx="220" cy="75" r="2.5" fill="#0284c7"/>
+                  <circle cx="310" cy="45" r="3" fill="#00D4FF"/>
+                  <circle cx="360" cy="55" r="2.5" fill="#00D4FF"/>
+                  <circle cx="440" cy="40" r="3" fill="#00D4FF"/>
+                  <circle cx="520" cy="75" r="2.5" fill="#0284c7"/>
+                  <circle cx="180" cy="105" r="2" fill="#0284c7"/>
+                  <circle cx="400" cy="95" r="2" fill="#0284c7"/>
                 </g>
 
-                <!-- 3. GIANT EMERGING BRAND EMBLEM (SalesforceIQ Large Glowing Ring Style) -->
+                <!-- LAYER 3: CENTERPIECE FULL RING & BRAND ICON (Emerging like sun over horizon) -->
                 <g>
-                  <!-- Soft Ambient Ring Glow -->
-                  <circle cx="290" cy="135" r="82" stroke="#38bdf8" stroke-width="26" fill="none" opacity="0.25"/>
-                  <!-- Main Hero Ring (Thick, Bold, Vibrant Gradient) -->
-                  <circle cx="290" cy="135" r="82" stroke="url(#sfHeroRing)" stroke-width="20" fill="none" stroke-linecap="round"/>
+                  <!-- Soft Outer Glow behind main ring -->
+                  <circle cx="290" cy="125" r="80" stroke="#00D4FF" stroke-width="24" fill="none" opacity="0.22"/>
+                  <!-- Main Full Circular Ring (Navy to Cyan Gradient) -->
+                  <circle cx="290" cy="125" r="80" stroke="url(#brandRingGradient)" stroke-width="20" fill="none"/>
+                  <!-- Solid White Core Circle -->
+                  <circle cx="290" cy="125" r="58" fill="#ffffff" filter="drop-shadow(0 6px 16px rgba(2, 132, 199, 0.18))"/>
                   
-                  <!-- Inner Glowing Orb with Claivis Brand Speech Soundwaves -->
-                  <circle cx="290" cy="135" r="58" fill="#ffffff" filter="drop-shadow(0px 8px 20px rgba(2, 132, 199, 0.2))"/>
-                  
-                  <!-- Claivis Vector Emblem Inside Orb -->
-                  <g transform="translate(258, 103) scale(0.64)">
+                  <!-- Existing Claivis Brand Icon centered inside -->
+                  <g transform="translate(258, 93) scale(0.64)">
                     <path d="M 64 24 C 42 24 28 36 28 50 C 28 64 42 76 64 76 L 68 86 L 76 72 C 82 66 84 58 84 50 C 84 34 68 24 64 24 Z" fill="#1A4A8A"/>
                     <circle cx="53" cy="50" r="17" fill="#ffffff"/>
                     <rect x="44" y="43" width="3.5" height="14" rx="1.75" fill="#00D4FF"/>
@@ -186,33 +180,33 @@ export function getWaitlistEmailHtml({
                   </g>
                 </g>
 
-                <!-- 4. FRONT ENVELOPE POCKET WITH THE SIGNATURE CURVED/WAVED LIP & SOFT SHADOW -->
-                <g filter="url(#sfLipShadow)">
-                  <path d="M 0 115 
-                           C 100 135, 190 155, 235 158 
-                           C 265 160, 275 142, 290 142 
-                           C 305 142, 315 160, 345 158 
-                           C 390 155, 480 135, 580 115 
-                           L 580 280 
-                           L 0 280 
+                <!-- LAYER 4: FRONT POCKET / LIP (Overlaps lower ring, organic 4-segment bezier wave with soft drop shadow) -->
+                <g filter="url(#frontLipShadow)">
+                  <path d="M 0 105 
+                           C 80 120, 150 138, 210 142 
+                           C 240 144, 265 130, 290 130 
+                           C 315 130, 340 144, 370 142 
+                           C 430 138, 500 120, 580 105 
+                           L 580 275 
+                           L 0 275 
                            Z" 
                         fill="#ffffff"/>
                   
-                  <!-- Soft Highlight along the curved lip -->
-                  <path d="M 0 115 
-                           C 100 135, 190 155, 235 158 
-                           C 265 160, 275 142, 290 142 
-                           C 305 142, 315 160, 345 158 
-                           C 390 155, 480 135, 580 115" 
-                        stroke="#e2e8f0" 
-                        stroke-width="1.5" 
+                  <!-- Soft paper fold highlight along organic wave edge -->
+                  <path d="M 0 105 
+                           C 80 120, 150 138, 210 142 
+                           C 240 144, 265 130, 290 130 
+                           C 315 130, 340 144, 370 142 
+                           C 430 138, 500 120, 580 105" 
+                        stroke="#edf2f7" 
+                        stroke-width="1.2" 
                         fill="none"/>
                 </g>
 
-                <!-- 5. NATURAL ENVELOPE DIAGONAL CREASES -->
-                <g opacity="0.65">
-                  <line x1="0" y1="115" x2="235" y2="185" stroke="#f1f5f9" stroke-width="2"/>
-                  <line x1="580" y1="115" x2="345" y2="185" stroke="#f1f5f9" stroke-width="2"/>
+                <!-- LAYER 5: CREASE LINES (Two faint subtle diagonal fold suggestions, opacity ~0.55) -->
+                <g opacity="0.55">
+                  <line x1="0" y1="265" x2="210" y2="155" stroke="#f1f5f9" stroke-width="1.5"/>
+                  <line x1="580" y1="265" x2="370" y2="155" stroke="#f1f5f9" stroke-width="1.5"/>
                 </g>
               </svg>
             </td>
@@ -220,7 +214,7 @@ export function getWaitlistEmailHtml({
 
           <!-- Hero Headline (Directly Below Envelope Opening on White Card) -->
           <tr>
-            <td align="center" style="padding: 8px 36px 28px 36px; background-color: #ffffff;">
+            <td align="center" style="padding: 6px 36px 28px 36px; background-color: #ffffff;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e293b; letter-spacing: -0.02em; line-height: 1.25; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                 You’ve been added to the<br/>Claivis waitlist.
               </h1>
