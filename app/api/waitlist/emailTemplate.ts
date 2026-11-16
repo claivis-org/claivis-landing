@@ -6,73 +6,293 @@ export function getWaitlistEmailHtml({
   schoolName: string;
 }) {
   const firstName = fullName.split(" ")[0] || fullName;
-  const schoolText = schoolName ? ` for ${schoolName}` : "";
+  const schoolText = schoolName ? ` for <strong>${schoolName}</strong>` : "";
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Claivis</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>You’ve been added to the Claivis waitlist</title>
 </head>
-<body style="margin:0; padding:0; background-color:#f4f6f8; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1a1a1a; line-height:1.6;">
-  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f4f6f8; padding:30px 15px;">
+<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.6; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; padding: 40px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:560px; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.05); border:1px solid #e5e7eb;">
+        <!-- Main Physical Letter Container -->
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08); border: 1px solid #e2e8f0;">
           
-          <!-- Header Bar -->
+          <!-- Top Header Navigation Bar -->
           <tr>
-            <td style="background-color:#1A4A8A; padding:28px 32px; text-align:left;">
-              <span style="font-size:24px; font-weight:800; color:#ffffff; letter-spacing:-0.03em; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Claivis</span>
+            <td style="padding: 28px 36px 12px 36px; background-color: #ffffff;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <!-- Brand Logo + Wordmark -->
+                  <td align="left" valign="middle">
+                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td valign="middle" style="padding-right: 12px;">
+                          <img src="https://useclaivis.com/logo.png" 
+                               width="40" height="40" 
+                               alt="Claivis" 
+                               style="display: block; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e2e8f0; object-fit: cover;"/>
+                        </td>
+                        <td valign="middle">
+                          <span style="font-size: 26px; font-weight: 800; color: #1a4a8a; letter-spacing: -0.03em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Claivis</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <!-- Top-Right Social Badges -->
+                  <td align="right" valign="middle">
+                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <!-- Twitter / X -->
+                        <td style="padding-left: 8px;">
+                          <a href="https://x.com/useclaivis" target="_blank" style="text-decoration: none; display: inline-block;">
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="width: 32px; height: 32px; border-radius: 50%; background-color: #0284c7;">
+                              <tr>
+                                <td align="center" valign="middle" style="width: 32px; height: 32px;">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff" style="display: block; margin: auto;">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                  </svg>
+                                </td>
+                              </tr>
+                            </table>
+                          </a>
+                        </td>
+                        <!-- Facebook -->
+                        <td style="padding-left: 8px;">
+                          <a href="https://facebook.com" target="_blank" style="text-decoration: none; display: inline-block;">
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="width: 32px; height: 32px; border-radius: 50%; background-color: #0284c7;">
+                              <tr>
+                                <td align="center" valign="middle" style="width: 32px; height: 32px;">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff" style="display: block; margin: auto;">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                  </svg>
+                                </td>
+                              </tr>
+                            </table>
+                          </a>
+                        </td>
+                        <!-- LinkedIn -->
+                        <td style="padding-left: 8px;">
+                          <a href="https://linkedin.com/company/claivis" target="_blank" style="text-decoration: none; display: inline-block;">
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="width: 32px; height: 32px; border-radius: 50%; background-color: #0284c7;">
+                              <tr>
+                                <td align="center" valign="middle" style="width: 32px; height: 32px;">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff" style="display: block; margin: auto;">
+                                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25a1.62 1.62 0 0 0-1.63 1.63c0 .9.73 1.63 1.63 1.63s1.63-.73 1.63-1.63c0-.9-.73-1.63-1.63-1.63z"/>
+                                  </svg>
+                                </td>
+                              </tr>
+                            </table>
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Main Content -->
+          <!-- Realistic SalesforceIQ Open Envelope with Waves, Curves, Shaded Interior & Emerging Brand Emblem -->
           <tr>
-            <td style="padding:32px; font-size:15px; color:#334155;">
-              <p style="margin-top:0; font-size:16px; font-weight:600; color:#0f172a;">
+            <td style="padding: 0; margin: 0; background-color: #ffffff;">
+              <svg width="100%" height="280" viewBox="0 0 580 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block; width: 100%;">
+                <defs>
+                  <!-- Interior Soft Glowing Gradient -->
+                  <linearGradient id="sfInteriorGrad" x1="290" y1="20" x2="290" y2="200" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="35%" stop-color="#f0f9ff"/>
+                    <stop offset="75%" stop-color="#e0f2fe"/>
+                    <stop offset="100%" stop-color="#bae6fd"/>
+                  </linearGradient>
+
+                  <!-- Large Hero Ring Gradient (Matching SalesforceIQ Bright Cyan to Azure) -->
+                  <linearGradient id="sfHeroRing" x1="160" y1="40" x2="420" y2="240" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#00D4FF"/>
+                    <stop offset="45%" stop-color="#0284C7"/>
+                    <stop offset="100%" stop-color="#0369A1"/>
+                  </linearGradient>
+
+                  <!-- Front Lip Drop Shadow (Soft, Deep, Diffused) -->
+                  <filter id="sfLipShadow" x="-20" y="80" width="620" height="180" filterUnits="userSpaceOnUse">
+                    <feDropShadow dx="0" dy="-8" stdDeviation="12" flood-color="#0369a1" flood-opacity="0.15"/>
+                    <feDropShadow dx="0" dy="-2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+                  </filter>
+
+                  <!-- Subtle Network Lines Gradient -->
+                  <linearGradient id="sfNetGrad" x1="0" y1="50" x2="580" y2="180" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0284c7" stop-opacity="0.08"/>
+                    <stop offset="50%" stop-color="#00d4ff" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.08"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- 1. OPEN ENVELOPE BACK FLAP & INTERIOR POCKET -->
+                <!-- Top edge slants up with smooth organic perspective from left (0, 100) to top peak (290, 25) to right (580, 100) -->
+                <path d="M 0 100 
+                         Q 140 50, 290 25 
+                         Q 440 50, 580 100 
+                         L 580 200 
+                         L 0 200 
+                         Z" 
+                      fill="url(#sfInteriorGrad)"/>
+
+                <!-- Top Back Flap Rim / Shadow -->
+                <path d="M 0 100 Q 140 50, 290 25 Q 440 50, 580 100" 
+                      stroke="#e2e8f0" 
+                      stroke-width="1.5" 
+                      fill="none"/>
+
+                <!-- 2. NETWORK CONSTELLATION MESH (Soft, Techy & Thematic Inside Envelope) -->
+                <g stroke="url(#sfNetGrad)" stroke-width="1.2">
+                  <line x1="50" y1="95" x2="160" y2="55"/>
+                  <line x1="160" y1="55" x2="290" y2="35"/>
+                  <line x1="290" y1="35" x2="420" y2="55"/>
+                  <line x1="420" y1="55" x2="530" y2="95"/>
+                  
+                  <line x1="160" y1="55" x2="230" y2="110"/>
+                  <line x1="420" y1="55" x2="350" y2="110"/>
+                  <line x1="290" y1="35" x2="290" y2="95"/>
+                  <line x1="230" y1="110" x2="350" y2="110"/>
+
+                  <circle cx="160" cy="55" r="3.5" fill="#38bdf8" opacity="0.75"/>
+                  <circle cx="290" cy="35" r="4.5" fill="#00d4ff" opacity="0.9"/>
+                  <circle cx="420" cy="55" r="3.5" fill="#38bdf8" opacity="0.75"/>
+                  <circle cx="230" cy="110" r="3" fill="#0284c7" opacity="0.6"/>
+                  <circle cx="350" cy="110" r="3" fill="#0284c7" opacity="0.6"/>
+                </g>
+
+                <!-- 3. GIANT EMERGING BRAND EMBLEM (SalesforceIQ Large Glowing Ring Style) -->
+                <g>
+                  <!-- Soft Ambient Ring Glow -->
+                  <circle cx="290" cy="135" r="82" stroke="#38bdf8" stroke-width="26" fill="none" opacity="0.25"/>
+                  <!-- Main Hero Ring (Thick, Bold, Vibrant Gradient) -->
+                  <circle cx="290" cy="135" r="82" stroke="url(#sfHeroRing)" stroke-width="20" fill="none" stroke-linecap="round"/>
+                  
+                  <!-- Inner Glowing Orb with Claivis Brand Speech Soundwaves -->
+                  <circle cx="290" cy="135" r="58" fill="#ffffff" filter="drop-shadow(0px 8px 20px rgba(2, 132, 199, 0.2))"/>
+                  
+                  <!-- Claivis Vector Emblem Inside Orb -->
+                  <g transform="translate(258, 103) scale(0.64)">
+                    <path d="M 64 24 C 42 24 28 36 28 50 C 28 64 42 76 64 76 L 68 86 L 76 72 C 82 66 84 58 84 50 C 84 34 68 24 64 24 Z" fill="#1A4A8A"/>
+                    <circle cx="53" cy="50" r="17" fill="#ffffff"/>
+                    <rect x="44" y="43" width="3.5" height="14" rx="1.75" fill="#00D4FF"/>
+                    <rect x="51.5" y="36" width="4" height="28" rx="2" fill="#00D4FF"/>
+                    <rect x="60" y="43" width="3.5" height="14" rx="1.75" fill="#00D4FF"/>
+                  </g>
+                </g>
+
+                <!-- 4. FRONT ENVELOPE POCKET WITH THE SIGNATURE CURVED/WAVED LIP & SOFT SHADOW -->
+                <g filter="url(#sfLipShadow)">
+                  <path d="M 0 115 
+                           C 100 135, 190 155, 235 158 
+                           C 265 160, 275 142, 290 142 
+                           C 305 142, 315 160, 345 158 
+                           C 390 155, 480 135, 580 115 
+                           L 580 280 
+                           L 0 280 
+                           Z" 
+                        fill="#ffffff"/>
+                  
+                  <!-- Soft Highlight along the curved lip -->
+                  <path d="M 0 115 
+                           C 100 135, 190 155, 235 158 
+                           C 265 160, 275 142, 290 142 
+                           C 305 142, 315 160, 345 158 
+                           C 390 155, 480 135, 580 115" 
+                        stroke="#e2e8f0" 
+                        stroke-width="1.5" 
+                        fill="none"/>
+                </g>
+
+                <!-- 5. NATURAL ENVELOPE DIAGONAL CREASES -->
+                <g opacity="0.65">
+                  <line x1="0" y1="115" x2="235" y2="185" stroke="#f1f5f9" stroke-width="2"/>
+                  <line x1="580" y1="115" x2="345" y2="185" stroke="#f1f5f9" stroke-width="2"/>
+                </g>
+              </svg>
+            </td>
+          </tr>
+
+          <!-- Hero Headline (Directly Below Envelope Opening on White Card) -->
+          <tr>
+            <td align="center" style="padding: 8px 36px 28px 36px; background-color: #ffffff;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e293b; letter-spacing: -0.02em; line-height: 1.25; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                You’ve been added to the<br/>Claivis waitlist.
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Main Letter Content -->
+          <tr>
+            <td style="padding: 0 40px 24px 40px; font-size: 15px; color: #334155; line-height: 1.7; background-color: #ffffff;">
+              <p style="margin-top: 0; font-size: 16px; font-weight: 600; color: #1e293b;">
                 Hello ${firstName},
               </p>
 
-              <p style="margin-bottom:16px;">
+              <p style="margin-bottom: 18px;">
                 Thank you for reserving a spot on our early access list${schoolText}! I’m really glad to have you with us.
               </p>
 
-              <p style="margin-bottom:16px;">
+              <p style="margin-bottom: 18px;">
                 We built Claivis because we know how stressful teacher shortages and class step-ins can be for school leaders. When a teacher isn't around, keeping lessons going smoothly without overwhelming the rest of your staff is a constant challenge.
               </p>
 
-              <p style="margin-bottom:16px;">
+              <p style="margin-bottom: 24px;">
                 With Claivis, your students can keep learning with live AI teaching tailored to your curriculum, classroom Q&amp;A, and automated lesson reports for your peace of mind.
               </p>
 
-              <!-- Highlight Callout Box -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f0f4f9; border-left:4px solid #1A4A8A; border-radius:4px; margin:24px 0;">
+              <!-- What Happens Next Panel -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 24px 0;">
                 <tr>
-                  <td style="padding:16px; font-size:14px; color:#1e293b;">
-                    <strong>What happens next?</strong><br/>
-                    We are giving access to schools in batches so we can work closely with each principal. I will reach out to you directly as soon as your school's slot is ready.
+                  <td style="padding: 20px 24px;">
+                    <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1a4a8a; text-transform: uppercase; letter-spacing: 0.05em;">
+                      What happens next?
+                    </p>
+                    <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      We are giving access to schools in batches so we can work closely with each principal. I will reach out to you directly as soon as your school's slot is ready.
+                    </p>
                   </td>
                 </tr>
               </table>
 
-              <p style="margin-bottom:24px;">
+              <p style="margin-bottom: 28px;">
                 If you have any quick questions or specific challenges your school is facing right now, feel free to reply directly to this email. I read every reply!
               </p>
 
-              <p style="margin-bottom:0; color:#0f172a; font-weight:500;">
-                Warm regards,<br/>
-                <strong style="font-size:16px; color:#0f172a;">Wisdom</strong><br/>
-                <span style="font-size:13px; color:#64748b;">Founder, Claivis</span>
-              </p>
+              <!-- Founder Signature -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                <tr>
+                  <td>
+                    <p style="margin: 0 0 4px 0; font-size: 15px; color: #1e293b; font-weight: 600;">
+                      Warm regards,
+                    </p>
+                    <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1a4a8a;">
+                      Wisdom
+                    </p>
+                    <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b; font-weight: 500;">
+                      Founder, Claivis
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:#f8fafc; padding:20px 32px; border-top:1px solid #f1f5f9; text-align:center; font-size:12px; color:#94a3b8;">
-              &copy; ${new Date().getFullYear()} Claivis. Helping schools keep learning active.
+            <td style="background-color: #f8fafc; padding: 28px 36px; border-top: 1px solid #e2e8f0; text-align: center;">
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748b;">
+                The Claivis Platform &bull; <a href="https://useclaivis.com" target="_blank" style="color: #0284c7; text-decoration: none; font-weight: 500;">useclaivis.com</a>
+              </p>
+              <p style="margin: 0; font-size: 12px; color: #94a3b8;">
+                &copy; ${new Date().getFullYear()} Claivis Inc. All rights reserved.
+              </p>
             </td>
           </tr>
 
